@@ -1,8 +1,8 @@
-﻿// <copyright file="LeaseName.cs" company="Endjin">
-// Copyright (c) Endjin. All rights reserved.
+﻿// <copyright file="LeaseName.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Endjin.Leasing.Azure.Specs.Helpers
+namespace Corvus.Leasing.Azure.Specs.Helpers
 {
     /// <summary>
     /// The name of a lease.

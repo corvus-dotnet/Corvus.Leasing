@@ -5,6 +5,7 @@
 namespace Microsoft.Extensions.DependencyInjection
 {
     using System;
+    using Corvus.Configuration;
     using Corvus.Leasing;
     using Corvus.Leasing.Internal;
     using Microsoft.Extensions.Configuration;
@@ -27,7 +28,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     var leaseProvider = new AzureLeaseProvider(
                         sp.GetRequiredService<ILogger<AzureLeaseProvider>>(),
-                        sp.GetRequiredService<IConfigurationRoot>());
+                        sp.GetRequiredService<IConfigurationRoot>(),
+                        sp.GetRequiredService<INameProvider>());
 
                     configureLeasing?.Invoke(leaseProvider);
 

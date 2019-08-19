@@ -487,6 +487,7 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
         public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, string leaseName, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
         {
             var cts = new CancellationTokenSource();
@@ -532,6 +533,7 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
         public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
         {
             var cts = new CancellationTokenSource();
@@ -577,6 +579,7 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
         public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, string leaseName, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
         {
             var cts = new CancellationTokenSource();
@@ -622,6 +625,7 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
         public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
         {
             var cts = new CancellationTokenSource();
@@ -858,6 +862,7 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
         public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, string leaseName, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
         {
             var cts = new CancellationTokenSource();
@@ -904,6 +909,7 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
         public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
         {
             var cts = new CancellationTokenSource();

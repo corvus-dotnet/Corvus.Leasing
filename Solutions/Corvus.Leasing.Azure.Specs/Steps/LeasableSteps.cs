@@ -1,10 +1,10 @@
-﻿// <copyright file="LeasableSteps.cs" company="Endjin">
-// Copyright (c) Endjin. All rights reserved.
+﻿// <copyright file="LeasableSteps.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
 #pragma warning disable
 
-namespace Endjin.Leasing.Azure.Specs.Steps
+namespace Corvus.Leasing.Azure.Specs.Steps
 {
     using System;
     using System.Collections.Generic;
@@ -13,13 +13,12 @@ namespace Endjin.Leasing.Azure.Specs.Steps
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Endjin.Composition;
-    using Endjin.Leasing.Azure.Specs.Helpers;
-    using Endjin.Leasing.Retry.Policies;
-    using Endjin.Retry.Policies;
-    using Endjin.Retry.Strategies;
-    using Endjin.SpecFlow.Bindings;
-
+    using Corvus.Leasing;
+    using Corvus.Leasing.Azure.Specs.Helpers;
+    using Corvus.Leasing.Retry.Policies;
+    using Corvus.Retry.Policies;
+    using Corvus.Retry.Strategies;
+    using Corvus.SpecFlow.Extensions;
     using Microsoft.Extensions.DependencyInjection;
 
     using NUnit.Framework;

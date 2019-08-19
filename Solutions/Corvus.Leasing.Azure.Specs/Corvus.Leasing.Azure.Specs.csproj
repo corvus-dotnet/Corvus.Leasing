@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Corvus.Configuration.TestEnvironment" Version="0.1.0" />
+    <PackageReference Include="Corvus.SpecFlow.Extensions" Version="0.1.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.14.0" />
     <PackageReference Include="SpecFlow" Version="3.0.225" />
     <PackageReference Include="SpecFlow.NUnit" Version="3.0.225" />
@@ -26,4 +28,9 @@
     <ProjectReference Include="..\Corvus.Leasing.InMemory\Corvus.Leasing.InMemory.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="specflow.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

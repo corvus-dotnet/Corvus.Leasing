@@ -1,14 +1,13 @@
-﻿// <copyright file="LeasingContainerBindings.cs" company="Endjin">
-// Copyright (c) Endjin. All rights reserved.
+﻿// <copyright file="LeasingContainerBindings.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Endjin.Leasing.Azure.Specs.Helpers
+namespace Corvus.Leasing.Azure.Specs.Helpers
 {
     using System.Collections.Generic;
-    using Endjin.Configuration;
-    using Endjin.SpecFlow.Bindings;
-    using Endjin.Test;
-
+    using Corvus.Configuration;
+    using Corvus.SpecFlow.Extensions;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     using TechTalk.SpecFlow;
@@ -27,8 +26,6 @@ namespace Endjin.Leasing.Azure.Specs.Helpers
         [BeforeFeature("@setupContainer", Order = ContainerBeforeFeatureOrder.PopulateServiceCollection)]
         public static void SetupFeature(FeatureContext featureContext)
         {
-            TestConfigurationService.EnableTestSession();
-
             ContainerBindings.ConfigureServices(
                 featureContext,
                 serviceCollection =>
@@ -37,12 +34,27 @@ namespace Endjin.Leasing.Azure.Specs.Helpers
                         {
                             { "StorageAccountConnectionString", "UseDevelopmentStorage=true" },
                         };
-                    serviceCollection.AddTestConfiguration(fallbackSettings);
 
-                    serviceCollection.AddEndjinJsonConverters();
+                    var configurationBuilder = new ConfigurationBuilder();
+                    configurationBuilder.AddTestConfiguration(fallbackSettings);
+
+                    serviceCollection.AddSingleton(configurationBuilder.Build());
+                    serviceCollection.AddTestNameProvider();
+
                     serviceCollection.AddLogging();
                     serviceCollection.AddAzureLeasing();
                 });
+        }
+
+        /// <summary>
+        /// Setup the endjin container for a feature.
+        /// </summary>
+        /// <remarks>We expect features run in parallel to be executing in separate app domains.</remarks>
+        /// <param name="featureContext">The SpecFlow test context.</param>
+        [BeforeFeature("@setupContainer", Order = ContainerBeforeFeatureOrder.ServiceProviderAvailable)]
+        public static void SetupTest(FeatureContext featureContext)
+        {
+            ContainerBindings.GetServiceProvider(featureContext).GetRequiredService<ITestNameProvider>().BeginTestSesion();
         }
 
         /// <summary>
@@ -56,7 +68,7 @@ namespace Endjin.Leasing.Azure.Specs.Helpers
             featureContext.RunAndStoreExceptions(
                 () =>
                 {
-                    TestConfigurationService.CompleteTestSession();
+                    ContainerBindings.GetServiceProvider(featureContext).GetRequiredService<ITestNameProvider>().CompleteTestSession();
                 });
         }
     }

@@ -1,19 +1,16 @@
-﻿// <copyright file="SharedSteps.cs" company="Endjin">
-// Copyright (c) Endjin. All rights reserved.
+﻿// <copyright file="SharedSteps.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
 #pragma warning disable
 
-namespace Endjin.Leasing.Azure.Specs.Steps
+namespace Corvus.Leasing.Azure.Specs.Steps
 {
     #region Using Directives
 
     using System;
     using System.Threading.Tasks;
-
-    using Endjin.Composition;
-    using Endjin.SpecFlow.Bindings;
-
+    using Corvus.SpecFlow.Extensions;
     using NUnit.Framework;
     using TechTalk.SpecFlow;
 

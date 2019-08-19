@@ -8,11 +8,11 @@ namespace Corvus.Leasing.Internal
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
+    using Corvus.Configuration;
     using Corvus.Leasing.Exceptions;
     using Corvus.Retry;
     using Corvus.Retry.Policies;
     using Corvus.Retry.Strategies;
-    using Corvus.Test;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.WindowsAzure.Storage;
@@ -25,6 +25,7 @@ namespace Corvus.Leasing.Internal
     {
         private readonly ILogger<ILeaseProvider> logger;
         private readonly IConfigurationRoot configurationRoot;
+        private readonly INameProvider nameProvider;
         private bool initialised;
         private CloudStorageAccount storageAccount;
         private CloudBlobClient client;
@@ -35,10 +36,12 @@ namespace Corvus.Leasing.Internal
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="configurationRoot">The configuration root.</param>
-        public AzureLeaseProvider(ILogger<ILeaseProvider> logger, IConfigurationRoot configurationRoot)
+        /// <param name="nameProvider">The name provider service.</param>
+        public AzureLeaseProvider(ILogger<ILeaseProvider> logger, IConfigurationRoot configurationRoot, INameProvider nameProvider)
         {
             this.logger = logger;
             this.configurationRoot = configurationRoot;
+            this.nameProvider = nameProvider;
         }
 
         /// <summary>
@@ -208,7 +211,7 @@ namespace Corvus.Leasing.Internal
         private string GetContainerName()
         {
             string cn = this.ContainerName ?? "genericleases";
-            return Corvus.Test.TestConfigurationService.InTestMode ? TestConfigurationService.ToTestName(cn, 63) : cn.ToLowerInvariant();
+            return this.nameProvider.ProvideName(cn, 63, NameCase.LowerInvariant);
         }
 
         private async Task InitialiseAsync()
@@ -229,11 +232,6 @@ namespace Corvus.Leasing.Internal
                         var containerPermissions = new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Off };
 
                         await Retriable.RetryAsync(() => this.container.SetPermissionsAsync(containerPermissions)).ConfigureAwait(false);
-                    }
-
-                    if (TestConfigurationService.InTestMode)
-                    {
-                        TestConfigurationService.TestNames.Add(containerName);
                     }
 
                     this.initialised = true;
