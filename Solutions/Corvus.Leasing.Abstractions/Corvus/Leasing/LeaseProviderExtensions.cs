@@ -9,6 +9,7 @@ namespace Corvus.Leasing
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using Corvus.Extensions;
     using Corvus.Leasing.Exceptions;
     using Corvus.Leasing.Retry.Policies;
     using Corvus.Retry;

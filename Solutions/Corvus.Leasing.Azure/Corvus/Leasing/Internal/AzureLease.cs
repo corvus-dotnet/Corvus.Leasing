@@ -6,6 +6,7 @@ namespace Corvus.Leasing.Internal
 {
     using System;
     using System.Text;
+    using Corvus.Extensions;
 
     /// <summary>
     /// An implementation of a lease for Azure blob leasing.

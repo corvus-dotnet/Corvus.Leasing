@@ -6,6 +6,7 @@ namespace Corvus.Leasing.Internal
 {
     using System;
     using System.Text;
+    using Corvus.Extensions;
 
     /// <summary>
     ///     A <see cref="Lease" /> implementation for in memory leases.
