@@ -37,9 +37,8 @@ steps:
     $IsPreRelease = (-not ([string]::IsNullOrEmpty($Env:GITVERSION_PRERELEASETAG)))
     Write-Host "##vso[task.setvariable variable=Endjin_IsPreRelease]$IsPreRelease"
     Write-Host "##vso[task.setvariable variable=Endjin_Repository_Name]$Env:BUILD_REPOSITORY_NAME"
+    Write-Host "##vso[task.setvariable variable=StorageAccountConnectionString]$Env:ENDJIN_AZURESTORAGECONNECTIONSTRING"
   displayName: 'Set Environment Variable for GitHub Releases'
-  env:
-    STORAGEACCOUNTCONNECTIONSTRING: $(Endjin_AzureStorageConnectionString)
 
 # Useful for debugging purposes
 - powershell: 'gci Env:'
