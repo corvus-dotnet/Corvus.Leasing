@@ -32,7 +32,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
                 {
                     var fallbackSettings = new Dictionary<string, string>
                         {
-                            { "StorageAccountConnectionString", "UseDevelopmentStorage=true" },
+                            { "STORAGEACCOUNTCONNECTIONSTRING", "UseDevelopmentStorage=true" },
                         };
 
                     var configurationBuilder = new ConfigurationBuilder();
