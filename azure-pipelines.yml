@@ -39,6 +39,8 @@ steps:
     Write-Host "##vso[task.setvariable variable=Endjin_Repository_Name]$Env:BUILD_REPOSITORY_NAME"
     Write-Host "##vso[task.setvariable variable=StorageAccountConnectionString]$Env:ENDJIN_AZURESTORAGECONNECTIONSTRING"
   displayName: 'Set Environment Variable for GitHub Releases'
+  env:
+    ENDJIN_AZURESTORAGECONNECTIONSTRING: $(Endjin_AzureStorageConnectionString)
 
 # Useful for debugging purposes
 - powershell: 'gci Env:'
