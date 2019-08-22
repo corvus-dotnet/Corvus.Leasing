@@ -40,8 +40,8 @@ steps:
   displayName: 'Set Environment Variable for GitHub Releases'
 
 # Useful for debugging purposes
-#- powershell: 'gci Env:'
-#  displayName: 'Print Environment Variables'
+- powershell: 'gci Env:'
+  displayName: 'Print Environment Variables'
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore & Build'
