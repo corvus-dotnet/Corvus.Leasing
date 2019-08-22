@@ -201,11 +201,10 @@ namespace Corvus.Leasing.Internal
         /// Gets the cloud storage account for the given connection string key.
         /// </summary>
         /// <returns>An instance of the cloud storage account for blob-based leasing.</returns>
-        /// <remarks>If the <see cref="ConnectionStringKey"/> is not set, it will fall back on a key called "StorageAccountConnectionString".</remarks>
+        /// <remarks>If the <see cref="ConnectionStringKey"/> is not set, it will fall back on a key called "STORAGEACCOUNTCONNECTIONSTRING".</remarks>
         protected virtual CloudStorageAccount GetStorageAccount()
         {
-            return
-                    CloudStorageAccount.Parse(this.configurationRoot[string.IsNullOrEmpty(this.ConnectionStringKey) ? "StorageAccountConnectionString" : this.ConnectionStringKey]);
+            return CloudStorageAccount.Parse(this.configurationRoot[string.IsNullOrEmpty(this.ConnectionStringKey) ? "STORAGEACCOUNTCONNECTIONSTRING" : this.ConnectionStringKey]);
         }
 
         private string GetContainerName()
