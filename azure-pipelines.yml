@@ -14,7 +14,7 @@ variables:
 
   BuildConfiguration: 'Release'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-  SolutionToBuild: 'Solutions/Corvus.Leasing.sln'
+  SolutionToBuild: $(Endjin_Solution_To_Build)
 
 steps:
 
@@ -34,17 +34,16 @@ steps:
   displayName: 'Run GitVersion'
 
 - powershell: |
-    $IsPreRelease = (-not ([string]::IsNullOrEmpty($Env:GITVERSION_PRERELEASETAG)))
-    Write-Host "##vso[task.setvariable variable=Endjin_IsPreRelease]$IsPreRelease"
+    Write-Host "##vso[task.setvariable variable=Endjin_IsPreRelease]$((-not ([string]::IsNullOrEmpty($Env:GITVERSION_PRERELEASETAG))))"
     Write-Host "##vso[task.setvariable variable=Endjin_Repository_Name]$Env:BUILD_REPOSITORY_NAME"
     Write-Host "##vso[task.setvariable variable=StorageAccountConnectionString]$Env:ENDJIN_AZURESTORAGECONNECTIONSTRING"
-  displayName: 'Set Environment Variable for GitHub Releases'
+  displayName: 'Set Custom Environment Variables'
   env:
     ENDJIN_AZURESTORAGECONNECTIONSTRING: $(Endjin_AzureStorageConnectionString)
 
 # Useful for debugging purposes
-- powershell: 'gci Env:'
-  displayName: 'Print Environment Variables'
+#- powershell: 'gci Env:'
+#  displayName: 'Print Environment Variables'
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore & Build'
@@ -97,7 +96,7 @@ steps:
   displayName: 'Create GitHub Release'      
   condition: and(succeeded(), or(variables['Endjin.ForcePublish'], eq(variables['GitVersion.PreReleaseTag'], '')))
   inputs:
-    gitHubConnection: 'corvus-dotnet-github'
+    gitHubConnection: $(Endjin_Service_Connection_GitHub)
     repositoryName: $(Endjin_Repository_Name)
     tagSource: manual
     tag: $(GitVersion.SemVer) 
@@ -112,6 +111,6 @@ steps:
   inputs:
     command: push
     nuGetFeedType: external
-    publishFeedCredentials: 'corvus-dotnet-nuget-org'
+    publishFeedCredentials: $(Endjin_Service_Connection_NuGet_Org)
     versioningScheme: byBuildNumber
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
