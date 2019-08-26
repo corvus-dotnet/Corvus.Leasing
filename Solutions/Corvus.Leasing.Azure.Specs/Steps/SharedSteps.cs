@@ -19,6 +19,13 @@ namespace Corvus.Leasing.Azure.Specs.Steps
     [Binding]
     public class SharedSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public SharedSteps(ScenarioContext scenarioContext)
+        {
+            this.scenarioContext = scenarioContext;
+        }
+
         [AfterScenario("ReleaseLeases")]
         public async Task ReleaseLeases(ScenarioContext scenarioContext)
         {
@@ -46,14 +53,14 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         {
             Exception exception;
             AggregateException aggregateException;
-            var hasException = ScenarioContext.Current.TryGetValue("Exception", out exception) || ScenarioContext.Current.TryGetValue("AggregateException", out aggregateException);
+            var hasException = this.scenarioContext.TryGetValue("Exception", out exception) || this.scenarioContext.TryGetValue("AggregateException", out aggregateException);
             Assert.False(hasException);
         }
 
         [Then(@"it should throw a (.*)")]
         public void ThenItShouldThrowAn(string exceptionName)
         {
-            var exception = ScenarioContext.Current.Get<Exception>("Exception");
+            var exception = this.scenarioContext.Get<Exception>("Exception");
 
             Assert.AreEqual(exceptionName, exception.GetType().Name);
         }
@@ -61,7 +68,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         [Then(@"it should throw an AggregateException containing (.*)")]
         public void ThenItShouldThrowAnContainingA(string innerExceptionName)
         {
-            var exception = ScenarioContext.Current.Get<AggregateException>("AggregateException");
+            var exception = this.scenarioContext.Get<AggregateException>("AggregateException");
 
             Assert.AreEqual(innerExceptionName, exception.InnerException.GetType().Name);
         }
