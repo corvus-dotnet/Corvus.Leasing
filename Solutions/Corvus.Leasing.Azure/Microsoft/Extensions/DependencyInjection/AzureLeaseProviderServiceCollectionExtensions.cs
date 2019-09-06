@@ -31,17 +31,24 @@ namespace Microsoft.Extensions.DependencyInjection
                 return services;
             }
 
+            // You can override by adding test name provider before leasing
+            // if you need test services.
+            services.AddNameProvider();
+
+            // YOu can overrdie by adding logging before adding the lease provider.
+            services.AddLogging();
+
             services.AddSingleton<ILeaseProvider>((sp) =>
-                {
-                    var leaseProvider = new AzureLeaseProvider(
-                        sp.GetRequiredService<ILogger<AzureLeaseProvider>>(),
-                        sp.GetRequiredService<IConfigurationRoot>(),
-                        sp.GetRequiredService<INameProvider>());
+            {
+                var leaseProvider = new AzureLeaseProvider(
+                    sp.GetRequiredService<ILogger<AzureLeaseProvider>>(),
+                    sp.GetRequiredService<IConfigurationRoot>(),
+                    sp.GetRequiredService<INameProvider>());
 
-                    configureLeasing?.Invoke(leaseProvider);
+                configureLeasing?.Invoke(leaseProvider);
 
-                    return leaseProvider;
-                });
+                return leaseProvider;
+            });
             return services;
         }
     }

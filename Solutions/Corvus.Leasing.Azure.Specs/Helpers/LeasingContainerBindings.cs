@@ -40,8 +40,6 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
 
                     serviceCollection.AddSingleton(configurationBuilder.Build());
                     serviceCollection.AddTestNameProvider();
-
-                    serviceCollection.AddLogging();
                     serviceCollection.AddAzureLeasing();
                 });
         }
