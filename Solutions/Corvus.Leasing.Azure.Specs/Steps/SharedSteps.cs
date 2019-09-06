@@ -54,7 +54,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
             Exception exception;
             AggregateException aggregateException;
             var hasException = this.scenarioContext.TryGetValue("Exception", out exception) || this.scenarioContext.TryGetValue("AggregateException", out aggregateException);
-            Assert.False(hasException);
+            Assert.False(hasException, exception?.Message);
         }
 
         [Then(@"it should throw a (.*)")]

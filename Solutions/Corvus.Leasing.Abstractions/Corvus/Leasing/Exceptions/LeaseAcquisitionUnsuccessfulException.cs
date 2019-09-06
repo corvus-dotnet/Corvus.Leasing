@@ -19,7 +19,7 @@ namespace Corvus.Leasing.Exceptions
         public LeaseAcquisitionUnsuccessfulException(LeasePolicy leasePolicy, Exception innerException)
             : base(string.Empty, innerException)
         {
-            this.LeasePolicy = leasePolicy;
+            this.LeasePolicy = leasePolicy ?? throw new ArgumentNullException(nameof(leasePolicy));
         }
 
         /// <summary>

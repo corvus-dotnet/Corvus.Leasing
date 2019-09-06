@@ -4,6 +4,7 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    using System.Linq;
     using Corvus.Leasing;
     using Corvus.Leasing.Internal;
 
@@ -19,6 +20,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The service collection.</returns>
         public static IServiceCollection AddInMemoryLeasing(this IServiceCollection services)
         {
+            if (services.Any(s => typeof(ILeaseProvider).IsAssignableFrom(s.ServiceType)))
+            {
+                // Already configured
+                return services;
+            }
+
             services.AddSingleton<ILeaseProvider>(_ => new InMemoryLeaseProvider());
             return services;
         }

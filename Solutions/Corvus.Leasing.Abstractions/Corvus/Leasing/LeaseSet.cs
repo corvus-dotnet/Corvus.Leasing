@@ -19,7 +19,7 @@ namespace Corvus.Leasing
         /// <param name="leases">The leases in the set.</param>
         public LeaseSet(IEnumerable<Lease> leases)
         {
-            this.Leases = leases;
+            this.Leases = leases ?? throw new System.ArgumentNullException(nameof(leases));
         }
 
         /// <summary>

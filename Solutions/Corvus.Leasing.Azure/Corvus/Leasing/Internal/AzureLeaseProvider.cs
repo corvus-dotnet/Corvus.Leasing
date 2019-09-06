@@ -39,9 +39,9 @@ namespace Corvus.Leasing.Internal
         /// <param name="nameProvider">The name provider service.</param>
         public AzureLeaseProvider(ILogger<ILeaseProvider> logger, IConfigurationRoot configurationRoot, INameProvider nameProvider)
         {
-            this.logger = logger;
-            this.configurationRoot = configurationRoot;
-            this.nameProvider = nameProvider;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
+            this.nameProvider = nameProvider ?? throw new ArgumentNullException(nameof(nameProvider));
         }
 
         /// <summary>
@@ -68,6 +68,11 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public async Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string proposedLeaseId = null)
         {
+            if (leasePolicy is null)
+            {
+                throw new ArgumentNullException(nameof(leasePolicy));
+            }
+
             this.logger.LogDebug($"Acquiring lease for '{leasePolicy.ActorName}' with name '{leasePolicy.Name}', duration '{leasePolicy.Duration}', and proposed id '{proposedLeaseId}'");
 
             try
@@ -156,6 +161,11 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public async Task ExtendAsync(Lease lease)
         {
+            if (lease is null)
+            {
+                throw new ArgumentNullException(nameof(lease));
+            }
+
             this.logger.LogDebug($"Extending lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
             await this.InitialiseAsync().ConfigureAwait(false);
             CloudBlockBlob blob = this.container.GetBlockBlobReference(lease.LeasePolicy.Name.ToLowerInvariant());
@@ -167,12 +177,22 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public Lease FromLeaseToken(string leaseToken)
         {
+            if (leaseToken is null)
+            {
+                throw new ArgumentNullException(nameof(leaseToken));
+            }
+
             return AzureLease.FromToken(this, leaseToken);
         }
 
         /// <inheritdoc/>
         public async Task ReleaseAsync(Lease lease)
         {
+            if (lease is null)
+            {
+                throw new ArgumentNullException(nameof(lease));
+            }
+
             this.logger.LogDebug($"Releasing lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
             await this.InitialiseAsync().ConfigureAwait(false);
             CloudBlockBlob blob = this.container.GetBlockBlobReference(lease.LeasePolicy.Name.ToLowerInvariant());
