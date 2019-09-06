@@ -25,8 +25,8 @@ namespace Corvus.Leasing
         /// <param name="id">The unique lease ID.</param>
         protected Lease(ILeaseProvider leaseProvider, LeasePolicy leasePolicy, string id)
         {
-            this.LeaseProvider = leaseProvider;
-            this.LeasePolicy = leasePolicy;
+            this.LeaseProvider = leaseProvider ?? throw new ArgumentNullException(nameof(leaseProvider));
+            this.LeasePolicy = leasePolicy ?? throw new ArgumentNullException(nameof(leasePolicy));
             this.Id = id;
         }
 

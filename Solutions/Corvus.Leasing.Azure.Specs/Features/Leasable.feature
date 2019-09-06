@@ -81,9 +81,7 @@ Scenario: A single actor executes a long running task with a retry until lease a
 	And we use a do not retry on lease acquisition unsuccessful policy
 	And we use no retry strategy
 	When I execute the task with options
-	Then it should not throw any exceptions
-	And it should return successfully
-	And 1 action(s) should have completed successfully
+	Then it should throw a ArgumentNullException
 
 Scenario: A single actor executes a long running task with no retry policy and a linear retry strategy
 	Given the long running task takes 0.5 seconds to complete
@@ -92,9 +90,7 @@ Scenario: A single actor executes a long running task with no retry policy and a
 	And we use no lease policy
 	And we use a linear retry strategy with periodicity of 1 seconds and 10 max retries
 	When I execute the task with options
-	Then it should not throw any exceptions
-	And it should return successfully
-	And 1 action(s) should have completed successfully
+	Then it should throw a ArgumentNullException
 
 Scenario: A single actor executes a long running task with no lease policy
 	Given we use a linear retry strategy with periodicity of 10 seconds and 10 max retries

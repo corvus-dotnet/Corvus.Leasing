@@ -5,6 +5,7 @@
 namespace Microsoft.Extensions.DependencyInjection
 {
     using System;
+    using System.Linq;
     using Corvus.Configuration;
     using Corvus.Leasing;
     using Corvus.Leasing.Internal;
@@ -24,6 +25,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The service collection.</returns>
         public static IServiceCollection AddAzureLeasing(this IServiceCollection services, Action<AzureLeaseProvider> configureLeasing = null)
         {
+            if (services.Any(s => typeof(ILeaseProvider).IsAssignableFrom(s.ServiceType)))
+            {
+                // Already configured
+                return services;
+            }
+
             services.AddSingleton<ILeaseProvider>((sp) =>
                 {
                     var leaseProvider = new AzureLeaseProvider(

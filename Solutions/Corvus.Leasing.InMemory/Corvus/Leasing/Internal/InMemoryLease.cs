@@ -73,6 +73,16 @@ namespace Corvus.Leasing.Internal
         /// <returns>An instance of an in-memory lease configured from the lease token.</returns>
         internal static InMemoryLease FromToken(InMemoryLeaseProvider leaseProvider, string token)
         {
+            if (leaseProvider is null)
+            {
+                throw new ArgumentNullException(nameof(leaseProvider));
+            }
+
+            if (token is null)
+            {
+                throw new ArgumentNullException(nameof(token));
+            }
+
             string tokenizedLease = token.Base64UrlDecode();
             string[] lines = tokenizedLease.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             if (lines[0] != LeaseTokenContentType)

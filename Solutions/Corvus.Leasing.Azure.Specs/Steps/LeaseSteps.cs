@@ -8,6 +8,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
 {
     using System;
     using System.Threading;
+    using System.Threading.Tasks;
     using Corvus.Leasing;
     using Corvus.Leasing.Internal;
     using Corvus.SpecFlow.Extensions;
@@ -28,12 +29,12 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         }
 
         [Given(@"Actor A has already acquired a lease for an operation with the same name")]
-        public void GivenActorAHasAlreadyAcquiredALeaseForAnOperationWithTheSameName()
+        public async Task GivenActorAHasAlreadyAcquiredALeaseForAnOperationWithTheSameName()
         {
             var otherPolicy = this.scenarioContext.Get<LeasePolicy>();
             var policy = new LeasePolicy { Name = otherPolicy.Name, Duration = TimeSpan.FromSeconds(15) };
             var leaseProvider = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
-            var lease = leaseProvider.AcquireAsync(policy).Result;
+            var lease = await leaseProvider.AcquireAsync(policy);
             this.scenarioContext.Set(lease, "ActorALease");
         }
 
@@ -63,11 +64,11 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         }
 
         [Given(@"I have already acquired the lease")]
-        public void GivenIHaveAlreadyAcquiredTheLease()
+        public async Task GivenIHaveAlreadyAcquiredTheLease()
         {
             var leaseProvider = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
             var policy = this.scenarioContext.Get<LeasePolicy>();
-            var lease = leaseProvider.AcquireAsync(policy).Result;
+            var lease = await leaseProvider.AcquireAsync(policy);
             this.scenarioContext.Set(lease);
         }
 
@@ -107,11 +108,11 @@ namespace Corvus.Leasing.Azure.Specs.Steps
 
 
         [Given(@"the lease has expired")]
-        public void GivenTheLeaseHasExpired()
+        public async Task GivenTheLeaseHasExpired()
         {
             var leaseProvider = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
             var policy = this.scenarioContext.Get<LeasePolicy>();
-            var lease = leaseProvider.AcquireAsync(policy).Result;
+            var lease = await leaseProvider.AcquireAsync(policy);
             Thread.Sleep(policy.Duration.Value.Add(TimeSpan.FromSeconds(2)));
             this.scenarioContext.Set(lease);
         }
@@ -207,7 +208,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         }
 
         [When(@"I acquire the lease")]
-        public void WhenIAcquireTheLease()
+        public async Task WhenIAcquireTheLease()
         {
             var policy = this.scenarioContext.Get<LeasePolicy>();
 
@@ -218,12 +219,12 @@ namespace Corvus.Leasing.Azure.Specs.Steps
             {
                 if (!this.scenarioContext.TryGetValue(out lease))
                 {
-                    lease = leaseProvider.AcquireAsync(policy).Result;
+                    lease = await leaseProvider.AcquireAsync(policy);
                     this.scenarioContext.Set(lease);
                 }
                 else
                 {
-                   lease = leaseProvider.AcquireAsync(policy).Result;
+                   lease = await leaseProvider.AcquireAsync(policy);
                 }
             }
             catch (AggregateException ex)
@@ -239,12 +240,12 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         }
 
         [When(@"I dispose the lease")]
-        public void WhenIDisposeTheLease()
+        public async Task WhenIDisposeTheLease()
         {
             var lease = this.scenarioContext.Get<Lease>();
             try
             {
-                lease.ReleaseAsync().Wait();
+                await lease.ReleaseAsync();
             }
             catch (AggregateException ex)
             {
@@ -259,12 +260,12 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         }
 
         [When(@"I release the lease")]
-        public void WhenIReleaseTheLease()
+        public async Task WhenIReleaseTheLease()
         {
             var lease = this.scenarioContext.Get<Lease>();
             try
             {
-                lease.ReleaseAsync().Wait();
+                await lease.ReleaseAsync();
             }
             catch (AggregateException ex)
             {
@@ -279,12 +280,12 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         }
 
         [When(@"I renew the lease")]
-        public void WhenIRenewTheLease()
+        public async Task WhenIRenewTheLease()
         {
             var lease = this.scenarioContext.Get<Lease>();
             try
             {
-                lease.ExtendAsync().Wait();
+                await lease.ExtendAsync();
             }
             catch (AggregateException ex)
             {
@@ -299,11 +300,11 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         }
 
         [Given(@"I create a token for a lease with an InMemoryLeaseProvider")]
-        public void GivenICreateATokenForALeaseWithAnInMemoryLeaseProvider()
+        public async Task GivenICreateATokenForALeaseWithAnInMemoryLeaseProvider()
         {
             var leaseProvider = new InMemoryLeaseProvider();
             var policy = this.scenarioContext.Get<LeasePolicy>();
-            var lease = leaseProvider.AcquireAsync(policy).Result;
+            var lease = await leaseProvider.AcquireAsync(policy);
             string leaseToken = leaseProvider.ToLeaseToken(lease);
             this.scenarioContext.Set(lease);
             this.scenarioContext.Set(leaseToken, "LeaseToken");
@@ -329,11 +330,11 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         }
 
         [Given(@"I create a lease with an InMemoryLeaseProvider")]
-        public void GivenICreateALeaseWithAnInMemoryLeaseProvider()
+        public async Task GivenICreateALeaseWithAnInMemoryLeaseProvider()
         {
             var leaseProvider = new InMemoryLeaseProvider();
             var policy = this.scenarioContext.Get<LeasePolicy>();
-            var lease = leaseProvider.AcquireAsync(policy).Result;
+            var lease = await leaseProvider.AcquireAsync(policy);
             this.scenarioContext.Set(lease);
         }
 
@@ -358,22 +359,22 @@ namespace Corvus.Leasing.Azure.Specs.Steps
 
 
         [Given(@"I create a token for a lease with an AzureLeaseProvider")]
-        public void GivenICreateATokenForALeaseWithAnAzureLeaseProvider()
+        public async Task GivenICreateATokenForALeaseWithAnAzureLeaseProvider()
         {
             var leaseProvider = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
             var policy = this.scenarioContext.Get<LeasePolicy>();
-            var lease = leaseProvider.AcquireAsync(policy).Result;
+            var lease = await leaseProvider.AcquireAsync(policy);
             string leaseToken = leaseProvider.ToLeaseToken(lease);
             this.scenarioContext.Set(lease);
             this.scenarioContext.Set(leaseToken, "LeaseToken");
         }
 
         [Given(@"I create a lease with an AzureLeaseProvider")]
-        public void GivenICreateALeaseWithAnAzureLeaseProvider()
+        public async Task GivenICreateALeaseWithAnAzureLeaseProvider()
         {
             var leaseProvider = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
             var policy = this.scenarioContext.Get<LeasePolicy>();
-            var lease = leaseProvider.AcquireAsync(policy).Result;
+            var lease = await leaseProvider.AcquireAsync(policy);
             this.scenarioContext.Set(lease);
         }
 

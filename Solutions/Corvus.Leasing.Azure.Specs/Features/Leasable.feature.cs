@@ -308,11 +308,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 83
  testRunner.When("I execute the task with options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 84
- testRunner.Then("it should not throw any exceptions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 85
- testRunner.And("it should return successfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
- testRunner.And("1 action(s) should have completed successfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("it should throw a ArgumentNullException", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -324,27 +320,23 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A single actor executes a long running task with no retry policy and a linear ret" +
                     "ry strategy", null, ((string[])(null)));
-#line 88
+#line 86
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 89
+#line 87
  testRunner.Given("the long running task takes 0.5 seconds to complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 90
+#line 88
  testRunner.And("the lease name is \"long-running-task\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 89
  testRunner.And("the lease duration is 40 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 90
  testRunner.And("we use no lease policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
+#line 91
  testRunner.And("we use a linear retry strategy with periodicity of 1 seconds and 10 max retries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
+#line 92
  testRunner.When("I execute the task with options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 95
- testRunner.Then("it should not throw any exceptions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 96
- testRunner.And("it should return successfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
- testRunner.And("1 action(s) should have completed successfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 93
+ testRunner.Then("it should throw a ArgumentNullException", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -354,22 +346,22 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void ASingleActorExecutesALongRunningTaskWithNoLeasePolicy()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A single actor executes a long running task with no lease policy", null, ((string[])(null)));
-#line 99
+#line 95
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 100
+#line 96
  testRunner.Given("we use a linear retry strategy with periodicity of 10 seconds and 10 max retries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 101
+#line 97
  testRunner.And("we use a do not retry policy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 98
  testRunner.And("the long running task takes 2 seconds to complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 99
  testRunner.When("I execute the task with options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 104
+#line 100
  testRunner.Then("it should not throw any exceptions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 105
+#line 101
  testRunner.And("it should return successfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 102
  testRunner.And("1 action(s) should have completed successfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -380,10 +372,10 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void ASingleActorExecutesALongRunningTaskUsingAMulti_LeasableWith3Leases()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A single actor executes a long running task using a multi-leasable with 3 leases", null, ((string[])(null)));
-#line 108
+#line 104
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 109
+#line 105
  testRunner.Given("the long running task takes 0.5 seconds to complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -394,11 +386,11 @@ this.ScenarioInitialize(scenarioInfo);
                         "\"lease2\""});
             table1.AddRow(new string[] {
                         "\"lease3\""});
-#line 110
+#line 106
  testRunner.And("the lease names are", ((string)(null)), table1, "And ");
-#line 115
+#line 111
  testRunner.When("I execute the task using all the leases", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 116
+#line 112
  testRunner.Then("1 action(s) should have completed successfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -411,12 +403,12 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A single actor executes a long running task with duration longer than the lease p" +
                     "eriod using a multi-leasable with 3 leases", null, ((string[])(null)));
-#line 118
+#line 114
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 119
+#line 115
  testRunner.Given("the long running task takes 18 seconds to complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 120
+#line 116
  testRunner.And("the lease duration is 15 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -427,11 +419,11 @@ this.ScenarioInitialize(scenarioInfo);
                         "\"lease2\""});
             table2.AddRow(new string[] {
                         "\"lease3\""});
-#line 121
+#line 117
  testRunner.And("the lease names are", ((string)(null)), table2, "And ");
-#line 126
+#line 122
  testRunner.When("I execute the task using all the leases", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 127
+#line 123
  testRunner.Then("1 action(s) should have completed successfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
