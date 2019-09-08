@@ -1,7 +1,7 @@
 <Project>
 
   <Import Project="Common.GitHub.proj" />
-  <Import Project="Common.Nuget.proj" />
+  <Import Project="Common.NuGet.proj" />
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -18,16 +18,18 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DebugType>Full</DebugType>
+    <DebugType>portable</DebugType>
+    <ci>true</ci>
   </PropertyGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 </Project>
