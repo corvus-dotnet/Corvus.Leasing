@@ -30,17 +30,13 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
                 featureContext,
                 serviceCollection =>
                 {
-                    var fallbackSettings = new Dictionary<string, string>
-                        {
-                            { "STORAGEACCOUNTCONNECTIONSTRING", "UseDevelopmentStorage=true" },
-                        };
+                    var options = new AzureLeaseProviderOptions
+                    {
+                        StorageAccountConnectionString = "UseDevelopmentStorage=true"
+                    };
 
-                    var configurationBuilder = new ConfigurationBuilder();
-                    configurationBuilder.AddTestConfiguration(fallbackSettings);
-
-                    serviceCollection.AddSingleton(configurationBuilder.Build());
                     serviceCollection.AddTestNameProvider();
-                    serviceCollection.AddAzureLeasing();
+                    serviceCollection.AddAzureLeasing(options);
                 });
         }
 

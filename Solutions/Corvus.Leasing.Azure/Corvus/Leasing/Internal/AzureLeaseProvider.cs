@@ -13,7 +13,6 @@ namespace Corvus.Leasing.Internal
     using Corvus.Retry;
     using Corvus.Retry.Policies;
     using Corvus.Retry.Strategies;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
@@ -24,7 +23,7 @@ namespace Corvus.Leasing.Internal
     public class AzureLeaseProvider : ILeaseProvider
     {
         private readonly ILogger<ILeaseProvider> logger;
-        private readonly IConfigurationRoot configurationRoot;
+        private readonly AzureLeaseProviderOptions options;
         private readonly INameProvider nameProvider;
         private bool initialised;
         private CloudStorageAccount storageAccount;
@@ -35,12 +34,12 @@ namespace Corvus.Leasing.Internal
         /// Initializes a new instance of the <see cref="AzureLeaseProvider"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="configurationRoot">The configuration root.</param>
+        /// <param name="options">The configuration options.</param>
         /// <param name="nameProvider">The name provider service.</param>
-        public AzureLeaseProvider(ILogger<ILeaseProvider> logger, IConfigurationRoot configurationRoot, INameProvider nameProvider)
+        public AzureLeaseProvider(ILogger<ILeaseProvider> logger, AzureLeaseProviderOptions options, INameProvider nameProvider)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
+            this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.nameProvider = nameProvider ?? throw new ArgumentNullException(nameof(nameProvider));
         }
 
@@ -49,12 +48,6 @@ namespace Corvus.Leasing.Internal
         /// </summary>
         /// <remarks>If this name is not set, it will default to a container called "genericleases".</remarks>
         public string ContainerName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the connection string configuration key for blob storage.
-        /// </summary>
-        /// <remarks>If this is not set, it will default to a key called "StorageAccountConnectionString".</remarks>
-        public string ConnectionStringKey { get; set; }
 
         /// <summary>
         /// Gets the default lease duration for the specific platform implementation of the lease.
@@ -218,13 +211,12 @@ namespace Corvus.Leasing.Internal
         }
 
         /// <summary>
-        /// Gets the cloud storage account for the given connection string key.
+        /// Gets the cloud storage account for the configured connection string.
         /// </summary>
         /// <returns>An instance of the cloud storage account for blob-based leasing.</returns>
-        /// <remarks>If the <see cref="ConnectionStringKey"/> is not set, it will fall back on a key called "STORAGEACCOUNTCONNECTIONSTRING".</remarks>
         protected virtual CloudStorageAccount GetStorageAccount()
         {
-            return CloudStorageAccount.Parse(this.configurationRoot[string.IsNullOrEmpty(this.ConnectionStringKey) ? "STORAGEACCOUNTCONNECTIONSTRING" : this.ConnectionStringKey]);
+            return CloudStorageAccount.Parse(this.options.StorageAccountConnectionString);
         }
 
         private string GetContainerName()
