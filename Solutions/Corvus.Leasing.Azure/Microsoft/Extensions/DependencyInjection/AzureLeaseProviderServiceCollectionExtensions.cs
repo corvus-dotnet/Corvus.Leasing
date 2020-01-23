@@ -24,7 +24,35 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="options">The configuration options.</param>
         /// <param name="configureLeasing">An optional configuration function for leasing.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddAzureLeasing(this IServiceCollection services, AzureLeaseProviderOptions options, Action<AzureLeaseProvider> configureLeasing = null)
+        public static IServiceCollection AddAzureLeasing(
+            this IServiceCollection services,
+            AzureLeaseProviderOptions options,
+            Action<AzureLeaseProvider> configureLeasing = null)
+        {
+            return services.AddAzureLeasing(_ => options, configureLeasing);
+        }
+
+        /// <summary>
+        /// Add the Azure implementation of leasing to the service collection.
+        /// </summary>
+        /// <param name="services">The service collection to which to add azure leasing.</param>
+        /// <param name="getOptions">Function to get the configuration options.</param>
+        /// <param name="configureLeasing">An optional configuration function for leasing.</param>
+        /// <returns>The service collection.</returns>
+        /// <remarks>
+        /// <para>
+        /// Typical usage when using IConfiguration will be:
+        ///
+        /// <code>
+        /// services.AddAzureLeasing(sp => sp.GetRequiredService&lt;IConfiguration&gt;().Get&lt;AzureLeaseProviderOptions&gt;();
+        /// </code>
+        ///
+        /// </para>
+        /// </remarks>
+        public static IServiceCollection AddAzureLeasing(
+            this IServiceCollection services,
+            Func<IServiceProvider, AzureLeaseProviderOptions> getOptions,
+            Action<AzureLeaseProvider> configureLeasing = null)
         {
             if (services.Any(s => typeof(ILeaseProvider).IsAssignableFrom(s.ServiceType)))
             {
@@ -43,13 +71,14 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 var leaseProvider = new AzureLeaseProvider(
                     sp.GetRequiredService<ILogger<AzureLeaseProvider>>(),
-                    options,
+                    getOptions(sp),
                     sp.GetRequiredService<INameProvider>());
 
                 configureLeasing?.Invoke(leaseProvider);
 
                 return leaseProvider;
             });
+
             return services;
         }
     }
