@@ -37,10 +37,16 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
 
                     var configurationBuilder = new ConfigurationBuilder();
                     configurationBuilder.AddTestConfiguration(fallbackSettings);
+                    IConfigurationRoot config = configurationBuilder.Build();
+                    serviceCollection.AddSingleton(config);
 
-                    serviceCollection.AddSingleton(configurationBuilder.Build());
+                    var options = new AzureLeaseProviderOptions
+                    {
+                        StorageAccountConnectionString = config["STORAGEACCOUNTCONNECTIONSTRING"]
+                    };
+                                       
                     serviceCollection.AddTestNameProvider();
-                    serviceCollection.AddAzureLeasing();
+                    serviceCollection.AddAzureLeasing(options);
                 });
         }
 
