@@ -45,16 +45,9 @@ namespace Corvus.Leasing
             {
                 return false;
             }
-            catch (AggregateException ex)
+            catch (AggregateException ex) when (ex.InnerExceptions.LastOrDefault() is LeaseAcquisitionUnsuccessfulException)
             {
-                if (ex.InnerExceptions.LastOrDefault() is LeaseAcquisitionUnsuccessfulException)
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                return false;
             }
         }
 
@@ -83,16 +76,9 @@ namespace Corvus.Leasing
             {
                 return (false, default(T));
             }
-            catch (AggregateException ex)
+            catch (AggregateException ex) when (ex.InnerExceptions.LastOrDefault() is LeaseAcquisitionUnsuccessfulException)
             {
-                if (ex.InnerExceptions.LastOrDefault() is LeaseAcquisitionUnsuccessfulException)
-                {
-                    return (false, default(T));
-                }
-                else
-                {
-                    throw;
-                }
+                return (false, default(T));
             }
         }
 

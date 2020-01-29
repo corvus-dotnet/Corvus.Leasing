@@ -29,7 +29,7 @@ namespace Corvus.Leasing.Internal
                 throw new ArgumentNullException(nameof(leasePolicy));
             }
 
-            proposedLeaseId = proposedLeaseId ?? Guid.NewGuid().ToString();
+            proposedLeaseId ??= Guid.NewGuid().ToString();
 
             Leases.TryGetValue(proposedLeaseId, out Lease lease);
 
