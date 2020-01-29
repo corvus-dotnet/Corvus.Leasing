@@ -81,10 +81,8 @@ namespace Corvus.Leasing.Internal
                         {
                             if (!await blob.ExistsAsync().ConfigureAwait(false))
                             {
-                                using (var ms = new MemoryStream())
-                                {
-                                    await blob.UploadFromStreamAsync(ms).ConfigureAwait(false);
-                                }
+                                using var ms = new MemoryStream();
+                                await blob.UploadFromStreamAsync(ms).ConfigureAwait(false);
                             }
                         }
                         catch (StorageException ex) when (ex.RequestInformation.HttpStatusCode == 400)

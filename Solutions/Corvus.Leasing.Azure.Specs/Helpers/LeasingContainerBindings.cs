@@ -44,7 +44,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
                     {
                         StorageAccountConnectionString = config["STORAGEACCOUNTCONNECTIONSTRING"]
                     };
-                                       
+
                     serviceCollection.AddTestNameProvider();
                     serviceCollection.AddAzureLeasing(options);
                 });
@@ -70,10 +70,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
         public static void TeardownContainer(FeatureContext featureContext)
         {
             featureContext.RunAndStoreExceptions(
-                () =>
-                {
-                    ContainerBindings.GetServiceProvider(featureContext).GetRequiredService<ITestNameProvider>().CompleteTestSession();
-                });
+                () => ContainerBindings.GetServiceProvider(featureContext).GetRequiredService<ITestNameProvider>().CompleteTestSession());
         }
     }
 }
