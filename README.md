@@ -4,19 +4,17 @@
 [![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Leasing/master/LICENSE)
 [![IMM](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Leasing/total?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Leasing/total?cache=false)
 
-Distributed leasing patterns. A generic abstraction, with Azure blob-based implementations.
+Leasing patterns for mediating access to exclusive resources in distributed processes. A generic abstraction, with an Azure blob-based implementation.
 
 It is built for netstandard2.0.
 
 ## Features
 
-Corvus.Leasing provides a means to acquire, release and extend exclusive leases to support exclusive resource access in distributed compute.
+Corvus.Leasing provides a means to acquire, release and extend exclusive leases to mediate resource access in distributed processing.
 
-**Caution** - you should be aware that using an exclusive leasing pattern, while essential for some activities, can introduce bottlenecks
-and deadlocks in your distributed processing (rather similar to the use of a mutex in multithreaded programming on a single instance),
-and you should be careful to understand the implications of introducing this into your system.
+**Caution** - you should be aware that using an exclusive leasing pattern, while essential for some activities, can introduce bottlenecks and deadlocks in your distributed processing (rather similar to the use of a mutex in multithreaded programming on a single instance), and you should be careful to understand the implications of introducing this into your system.
 
-The `ILeaseProvider` interface supports a cycle from `Acquire` (for a duration), through an optional `Extend` (renewing a lease before it expires for another lease period) to `Release` (relinquish the lease) cycle.
+The `ILeaseProvider` interface supports a cycle from `Acquire` (for a duration), through an optional `Extend` (renewing a lease before it expires for another lease period) to `Release` (relinquish the lease).
 
 Standard implementations of this are provided for Azure Blob storage, and an "in memory" version which is intended for testing, rather than production code..
 
