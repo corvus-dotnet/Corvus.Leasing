@@ -100,8 +100,8 @@
     Id: 87ee2c3e-b17a-4939-b969-2c9c034d05d7
     Measures:
         -
-            Score: 0
-            Description: None
+            Score: 2
+            Description: 'In production use by a customer'
 -
     Name: Insights
     Id: 71a02488-2dc9-4d25-94fa-8c2346169f8b
