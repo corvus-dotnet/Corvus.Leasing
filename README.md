@@ -13,11 +13,12 @@ It is built for netstandard2.0.
 Corvus.Leasing provides a means to acquire, release and extend exclusive leases to support exclusive resource access in distributed compute.
 
 **Caution** - you should be aware that using an exclusive leasing pattern, while essential for some activities, can introduce bottlenecks
-and deadlocks in your distributed processing (rather similar to the use of a mutex in multithreaded programming in a single process),
+and deadlocks in your distributed processing (rather similar to the use of a mutex in multithreaded programming on a single instance),
 and you should be careful to understand the implications of introducing this into your system.
 
-The basic interface `ILeaseProvider` interface supports a cycle from `Acquire` (for a duration), through an optional `Extend` (renewing a lease before it expires for another lease period)
-to `Release` (relinquish the lease) cycle.
+The `ILeaseProvider` interface supports a cycle from `Acquire` (for a duration), through an optional `Extend` (renewing a lease before it expires for another lease period) to `Release` (relinquish the lease) cycle.
+
+Standard implementations of this are provided for Azure Blob storage, and an "in memory" version which is intended for testing, rather than production code..
 
 Typically, you use the lease provider through one of the extension methods in `LeaseProviderExtensions`.
 
