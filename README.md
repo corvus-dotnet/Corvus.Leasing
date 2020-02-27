@@ -10,7 +10,51 @@ It is built for netstandard2.0.
 
 ## Features
 
-<TODO>
+Corvus.Leasing provides a means to acquire, release and extend exclusive leases to support exclusive resource access in distributed compute.
+
+**Caution** - you should be aware that using an exclusive leasing pattern, while essential for some activities, can introduce bottlenecks
+and deadlocks in your distributed processing (rather similar to the use of a mutex in multithreaded programming in a single process),
+and you should be careful to understand the implications of introducing this into your system.
+
+The basic interface `ILeaseProvider` interface supports a cycle from `Acquire` (for a duration), through an optional `Extend` (renewing a lease before it expires for another lease period)
+to `Release` (relinquish the lease) cycle.
+
+Typically, you use the lease provider through one of the extension methods in `LeaseProviderExtensions`.
+
+These give you a mutex model, with try-once or try-until-acquire-or-timeout semantics, and auto-renewal behaviour.
+
+At its simplest, you can execute an action with guaranteed distributed mutex semantics.
+
+```
+leaseProvider.ExecuteWithMutexAsync(() => { /* my action */ }, "myuniqueleasename");
+```
+
+This will block until the lease is acquired, and then execute the action, holding the lease until it is done.
+
+The operation has a default timeout. If the lease cannot be acquired in time, it will throw a `LeaseAcquisitionUnsuccessfulException`.
+
+You can also use the "try once" semantics.
+
+```
+leaseProvider.ExecuteWithMutexTryOnceAsync(() => { /* my action */ }, "myuniqueleasename");
+```
+
+This will try to acquire the lease, and then execute the action, holding the lease until it is done. If it cannot acquire the lease, it will immediately throw
+a `LeaseAcquisitionUnsuccessfulException` without retrying.
+
+If you do not want to see the `LeaseAcquisitionUnsuccessfulException`, you can suppress it and turn it into a boolean return value
+with an extension method.
+
+```
+leaseProvider.ExecuteWithMutexAsync(() => { /* my action */ }, "myuniqueleasename").DoNotThrowIfLeaseNotAcquired();
+```
+
+There are various overloads that allow you to control the duration of the lease, and the strategies and policy for retrying in the event of failure.
+
+Most providers also have constraints on the lease name and lease duration - e.g. special characters, minimum duration. If you use an invalid parameter,
+it will raise an `InvalidOperationException`.
+
+It is also possible that the leasing operation will fail during initialization. In that case you will see an `InitializationFailureException`
 
 ## Licenses
 
