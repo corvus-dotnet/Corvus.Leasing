@@ -36,7 +36,11 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
                         };
 
                     var configurationBuilder = new ConfigurationBuilder();
-                    configurationBuilder.AddTestConfiguration(fallbackSettings);
+                    
+                    // Adding test configuration expects the name of the local settings file for the specs project. In this
+                    // case we don't actually have one, so we're passing a dummy string for the file name. The configuration
+                    // method doesn't need this file to actually exist.
+                    configurationBuilder.AddTestConfiguration("settings.json", fallbackSettings);
                     IConfigurationRoot config = configurationBuilder.Build();
                     serviceCollection.AddSingleton(config);
 
