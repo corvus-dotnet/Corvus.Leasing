@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Leasing.Abstractions
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Leasing.InMemory", "Corvus.Leasing.InMemory\Corvus.Leasing.InMemory.csproj", "{EE8DC0A0-BECC-4E49-8F1E-7658CFB9B1D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corvus.Leasing.Azure", "Corvus.Leasing.Azure\Corvus.Leasing.Azure.csproj", "{CAACF7A5-BA8B-4DE9-BDA8-85AC67C5D3DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Leasing.Azure", "Corvus.Leasing.Azure\Corvus.Leasing.Azure.csproj", "{CAACF7A5-BA8B-4DE9-BDA8-85AC67C5D3DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Leasing.Azure.Specs", "Corvus.Leasing.Azure.Specs\Corvus.Leasing.Azure.Specs.csproj", "{F5FB4A1A-B4B0-43E9-83AB-19013D8BD427}"
 EndProject

@@ -42,7 +42,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
 
                     var options = new AzureLeaseProviderOptions
                     {
-                        StorageAccountConnectionString = config["STORAGEACCOUNTCONNECTIONSTRING"]
+                        StorageAccountConnectionString = config["STORAGEACCOUNTCONNECTIONSTRING"],
                     };
 
                     serviceCollection.AddTestNameProvider();

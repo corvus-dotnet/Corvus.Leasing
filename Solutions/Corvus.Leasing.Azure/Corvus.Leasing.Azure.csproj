@@ -1,25 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace />
   </PropertyGroup>
+  
   <PropertyGroup>
+    <Copyright>Copyright (c) Endjin Limited 2020. All rights reserved.</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageDescription>
-    </PackageDescription>
-    <PackageTags>
-    </PackageTags>
-    <PackageReleaseNotes>
-    </PackageReleaseNotes>
+    <PackageDescription></PackageDescription>
+    <PackageTags></PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
-  <Import Project="..\Common.NetStandard_2_0.proj" />
+
   <ItemGroup>
     <PackageReference Include="Corvus.Configuration" Version="0.3.0" />
     <PackageReference Include="Corvus.Extensions" Version="0.8.0" />
     <PackageReference Include="Corvus.Retry" Version="0.4.0" />
+    <PackageReference Include="Endjin.RecommendedPractices" Version="0.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Corvus.Leasing.Abstractions\Corvus.Leasing.Abstractions.csproj" />
   </ItemGroup>
