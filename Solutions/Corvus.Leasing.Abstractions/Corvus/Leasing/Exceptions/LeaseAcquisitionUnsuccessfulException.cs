@@ -16,7 +16,7 @@ namespace Corvus.Leasing.Exceptions
         /// </summary>
         /// <param name="leasePolicy">The lease policy used during the attempt to acquire the lease.</param>
         /// <param name="innerException">Exception that cause the lease to be unsuccessfully acquired.</param>
-        public LeaseAcquisitionUnsuccessfulException(LeasePolicy leasePolicy, Exception innerException)
+        public LeaseAcquisitionUnsuccessfulException(LeasePolicy leasePolicy, Exception? innerException)
             : base(string.Empty, innerException)
         {
             this.LeasePolicy = leasePolicy ?? throw new ArgumentNullException(nameof(leasePolicy));

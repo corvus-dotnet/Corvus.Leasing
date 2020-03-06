@@ -22,7 +22,7 @@ namespace Corvus.Leasing.Internal
         public TimeSpan DefaultLeaseDuration => TimeSpan.FromSeconds(59);
 
         /// <inheritdoc/>
-        public Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string proposedLeaseId = null)
+        public Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string? proposedLeaseId = null)
         {
             if (leasePolicy is null)
             {
@@ -75,7 +75,10 @@ namespace Corvus.Leasing.Internal
                 throw new ArgumentNullException(nameof(lease));
             }
 
-            Leases.TryRemove(lease.Id, out Lease _);
+            if (lease.Id != null)
+            {
+                Leases.TryRemove(lease.Id, out Lease _);
+            }
 
             return Task.CompletedTask;
         }

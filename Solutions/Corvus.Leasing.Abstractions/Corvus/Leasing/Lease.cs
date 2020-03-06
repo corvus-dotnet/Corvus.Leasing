@@ -33,7 +33,7 @@ namespace Corvus.Leasing
         /// <summary>
         /// Gets or sets the lease id.
         /// </summary>
-        public string Id { get; protected set; }
+        public string? Id { get; protected set; }
 
         /// <summary>
         /// Gets the platform-specific lease provider for this lease.
