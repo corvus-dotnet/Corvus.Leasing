@@ -27,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddAzureLeasing(
             this IServiceCollection services,
             AzureLeaseProviderOptions options,
-            Action<AzureLeaseProvider> configureLeasing = null)
+            Action<AzureLeaseProvider>? configureLeasing = null)
         {
             return services.AddAzureLeasing(_ => options, configureLeasing);
         }
@@ -52,7 +52,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddAzureLeasing(
             this IServiceCollection services,
             Func<IServiceProvider, AzureLeaseProviderOptions> getOptions,
-            Action<AzureLeaseProvider> configureLeasing = null)
+            Action<AzureLeaseProvider>? configureLeasing = null)
         {
             if (services.Any(s => typeof(ILeaseProvider).IsAssignableFrom(s.ServiceType)))
             {

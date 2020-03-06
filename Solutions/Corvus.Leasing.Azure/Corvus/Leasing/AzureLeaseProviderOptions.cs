@@ -14,6 +14,6 @@ namespace Corvus.Leasing
         /// <summary>
         /// Gets or sets the storage account connection string.
         /// </summary>
-        public string StorageAccountConnectionString { get; set; }
+        public string? StorageAccountConnectionString { get; set; }
     }
 }

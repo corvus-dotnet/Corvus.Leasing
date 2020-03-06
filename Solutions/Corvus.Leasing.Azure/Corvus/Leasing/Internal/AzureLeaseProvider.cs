@@ -26,9 +26,9 @@ namespace Corvus.Leasing.Internal
         private readonly AzureLeaseProviderOptions options;
         private readonly INameProvider nameProvider;
         private bool initialised;
-        private CloudStorageAccount storageAccount;
-        private CloudBlobClient client;
-        private CloudBlobContainer container;
+        private CloudStorageAccount? storageAccount;
+        private CloudBlobClient? client;
+        private CloudBlobContainer? container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureLeaseProvider"/> class.
@@ -47,7 +47,7 @@ namespace Corvus.Leasing.Internal
         /// Gets or sets the blob container name for leases.
         /// </summary>
         /// <remarks>If this name is not set, it will default to a container called "genericleases".</remarks>
-        public string ContainerName { get; set; }
+        public string? ContainerName { get; set; }
 
         /// <summary>
         /// Gets the default lease duration for the specific platform implementation of the lease.
@@ -59,7 +59,7 @@ namespace Corvus.Leasing.Internal
         }
 
         /// <inheritdoc/>
-        public async Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string proposedLeaseId = null)
+        public async Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string? proposedLeaseId = null)
         {
             if (leasePolicy is null)
             {
@@ -72,7 +72,8 @@ namespace Corvus.Leasing.Internal
             {
                 await this.InitialiseAsync().ConfigureAwait(false);
 
-                CloudBlockBlob blob = this.container.GetBlockBlobReference((leasePolicy.Name ?? Guid.NewGuid().ToString()).ToLowerInvariant());
+                // Once Initialise has been called, we know this.container is set.
+                CloudBlockBlob blob = this.container!.GetBlockBlobReference((leasePolicy.Name ?? Guid.NewGuid().ToString()).ToLowerInvariant());
 
                 await Retriable.RetryAsync(
                     async () =>
@@ -159,7 +160,7 @@ namespace Corvus.Leasing.Internal
 
             this.logger.LogDebug($"Extending lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
             await this.InitialiseAsync().ConfigureAwait(false);
-            CloudBlockBlob blob = this.container.GetBlockBlobReference(lease.LeasePolicy.Name.ToLowerInvariant());
+            CloudBlockBlob blob = this.container!.GetBlockBlobReference(lease.LeasePolicy.Name.ToLowerInvariant());
             await Retriable.RetryAsync(() => blob.RenewLeaseAsync(new AccessCondition { LeaseId = lease.Id })).ConfigureAwait(false);
             (lease as AzureLease)?.SetLastAcquired(DateTimeOffset.Now);
             this.logger.LogDebug($"Extended lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
@@ -184,12 +185,17 @@ namespace Corvus.Leasing.Internal
                 throw new ArgumentNullException(nameof(lease));
             }
 
+            if (!(lease is AzureLease al))
+            {
+                throw new ArgumentException("Only Leases of type 'AzureLease' can be released by the AzureLeaseProvider.");
+            }
+
             this.logger.LogDebug($"Releasing lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
             await this.InitialiseAsync().ConfigureAwait(false);
-            CloudBlockBlob blob = this.container.GetBlockBlobReference(lease.LeasePolicy.Name.ToLowerInvariant());
+            CloudBlockBlob blob = this.container!.GetBlockBlobReference(lease.LeasePolicy.Name.ToLowerInvariant());
 
             await Retriable.RetryAsync(() => blob.ReleaseLeaseAsync(new AccessCondition { LeaseId = lease.Id })).ConfigureAwait(false);
-            var al = lease as AzureLease;
+
             al.SetLastAcquired(null);
             al.ClearId();
             this.logger.LogDebug($"Released lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
