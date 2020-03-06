@@ -22,7 +22,8 @@ namespace Corvus.Leasing
     public static class LeaseProviderExtensions
     {
         /// <summary>
-        /// Apply to a call so that it will return a success/failure code rather than throw the <see cref="LeaseAcquisitionUnsuccessfulException"/>.
+        /// Apply to a call so that it will return a success/failure code rather than throw the
+        /// <see cref="LeaseAcquisitionUnsuccessfulException"/>.
         /// </summary>
         /// <param name="leaseTask">The task returned from the lease function.</param>
         /// <returns>A value indicating whether the lease was acquired successfully.</returns>
@@ -52,11 +53,13 @@ namespace Corvus.Leasing
         }
 
         /// <summary>
-        /// Apply to a call so that it will return a success/failure code rather than throw the <see cref="LeaseAcquisitionUnsuccessfulException"/>.
+        /// Apply to a call so that it will return a success/failure code rather than throw the
+        /// <see cref="LeaseAcquisitionUnsuccessfulException"/>.
         /// </summary>
         /// <typeparam name="T">The type of the task result.</typeparam>
         /// <param name="leaseTask">The task returned from the lease function.</param>
-        /// <returns>A tuple containing a value indicating whether the lease was acquired successfully, and the return value from the task.</returns>
+        /// <returns>A tuple containing a value indicating whether the lease was acquired successfully, and the return value
+        /// from the task.</returns>
         /// <remarks>
         /// This will still throw any other exception.
         /// </remarks>
@@ -74,11 +77,11 @@ namespace Corvus.Leasing
             }
             catch (LeaseAcquisitionUnsuccessfulException)
             {
-                return (false, default(T));
+                return (false, default!);
             }
             catch (AggregateException ex) when (ex.InnerExceptions.LastOrDefault() is LeaseAcquisitionUnsuccessfulException)
             {
-                return (false, default(T));
+                return (false, default!);
             }
         }
 
@@ -92,7 +95,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, string leaseName, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            string leaseName,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -107,7 +116,15 @@ namespace Corvus.Leasing
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
-            return ExecuteWithMutexAsync(leaseProvider, action, leaseName, retryStrategy, retryPolicy, duration, actorName, proposedLeaseId);
+            return ExecuteWithMutexAsync(
+                leaseProvider,
+                action,
+                leaseName,
+                retryStrategy,
+                retryPolicy,
+                duration,
+                actorName,
+                proposedLeaseId);
         }
 
         /// <summary>
@@ -120,7 +137,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, IEnumerable<string> leaseNames, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            IEnumerable<string> leaseNames,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -153,7 +176,13 @@ namespace Corvus.Leasing
         /// <param name="retryPolicy">The retry policy.</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, LeasePolicy leasePolicy, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            LeasePolicy leasePolicy,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -178,7 +207,13 @@ namespace Corvus.Leasing
         /// <param name="retryPolicy">The retry policy.</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, LeasePolicy leasePolicy, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            LeasePolicy leasePolicy,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -203,7 +238,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, string leaseName, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            string leaseName,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -231,7 +272,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, IEnumerable<string> leaseNames, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            IEnumerable<string> leaseNames,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -264,7 +311,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexTryOnceAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, string leaseName, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexTryOnceAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            string leaseName,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -292,7 +345,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexTryOnceAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, IEnumerable<string> leaseNames, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexTryOnceAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            IEnumerable<string> leaseNames,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -325,7 +384,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexTryOnceAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, string leaseName, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexTryOnceAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            string leaseName,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -353,7 +418,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexTryOnceAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, IEnumerable<string> leaseNames, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexTryOnceAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            IEnumerable<string> leaseNames,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -382,7 +453,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, string leaseName, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            string leaseName,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -415,7 +493,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, IEnumerable<string> leaseNames, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            IEnumerable<string> leaseNames,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -448,7 +533,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, string leaseName, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task>
+            action, string leaseName,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -481,7 +573,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, IEnumerable<string> leaseNames, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            IEnumerable<string> leaseNames,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -514,7 +613,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, string leaseName, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            string leaseName,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -547,7 +653,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -580,7 +693,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, string leaseName, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            string leaseName,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -613,7 +733,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -646,7 +773,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexTryOnceAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, string leaseName, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexTryOnceAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            string leaseName,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -679,7 +813,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexTryOnceAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexTryOnceAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -712,7 +853,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexTryOnceAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, string leaseName, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexTryOnceAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            string leaseName,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -745,7 +893,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task ExecuteWithMutexTryOnceAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexTryOnceAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -780,7 +935,15 @@ namespace Corvus.Leasing
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, string leaseName, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            string? leaseName,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string? actorName = null,
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -807,10 +970,16 @@ namespace Corvus.Leasing
             return Retriable.RetryAsync(
                 async () =>
                 {
-                    Lease lease = null;
+                    Lease? lease = null;
                     try
                     {
-                        lease = await AcquireLeaseWithRenewalTask(leaseProvider, leaseName, actorName, duration, proposedLeaseId, cts.Token).ConfigureAwait(false);
+                        lease = await AcquireLeaseWithRenewalTask(
+                            leaseProvider,
+                            leaseName,
+                            actorName,
+                            duration,
+                            proposedLeaseId,
+                            cts.Token).ConfigureAwait(false);
                         try
                         {
                             action(cts.Token);
@@ -846,7 +1015,15 @@ namespace Corvus.Leasing
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Action<CancellationToken> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Action<CancellationToken> action,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -878,10 +1055,16 @@ namespace Corvus.Leasing
             return Retriable.RetryAsync(
                 async () =>
                 {
-                    LeaseSet leaseSet = null;
+                    LeaseSet? leaseSet = null;
                     try
                     {
-                        leaseSet = await AcquireLeaseWithRenewalTask(leaseProvider, leaseNames, actorName, duration, proposedLeaseId, cts.Token).ConfigureAwait(false);
+                        leaseSet = await AcquireLeaseWithRenewalTask(
+                            leaseProvider,
+                            leaseNames,
+                            actorName,
+                            duration,
+                            proposedLeaseId,
+                            cts.Token).ConfigureAwait(false);
                         try
                         {
                             action(cts.Token);
@@ -917,7 +1100,15 @@ namespace Corvus.Leasing
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, string leaseName, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            string? leaseName,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string? actorName = null,
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -944,10 +1135,16 @@ namespace Corvus.Leasing
             return Retriable.RetryAsync(
                 async () =>
                 {
-                    Lease lease = null;
+                    Lease? lease = null;
                     try
                     {
-                        lease = await AcquireLeaseWithRenewalTask(leaseProvider, leaseName, actorName, duration, proposedLeaseId, cts.Token).ConfigureAwait(false);
+                        lease = await AcquireLeaseWithRenewalTask(
+                            leaseProvider,
+                            leaseName,
+                            actorName,
+                            duration,
+                            proposedLeaseId,
+                            cts.Token).ConfigureAwait(false);
                         try
                         {
                             await action(cts.Token).ConfigureAwait(false);
@@ -983,7 +1180,15 @@ namespace Corvus.Leasing
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
-        public static Task ExecuteWithMutexAsync(this ILeaseProvider leaseProvider, Func<CancellationToken, Task> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task ExecuteWithMutexAsync(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task> action,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1015,10 +1220,16 @@ namespace Corvus.Leasing
             return Retriable.RetryAsync(
                 async () =>
                 {
-                    LeaseSet leaseSet = null;
+                    LeaseSet? leaseSet = null;
                     try
                     {
-                        leaseSet = await AcquireLeaseWithRenewalTask(leaseProvider, leaseNames, actorName, duration, proposedLeaseId, cts.Token).ConfigureAwait(false);
+                        leaseSet = await AcquireLeaseWithRenewalTask(
+                            leaseProvider,
+                            leaseNames,
+                            actorName,
+                            duration,
+                            proposedLeaseId,
+                            cts.Token).ConfigureAwait(false);
                         try
                         {
                             await action(cts.Token).ConfigureAwait(false);
@@ -1052,7 +1263,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, string leaseName, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            string leaseName,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1081,7 +1298,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, IEnumerable<string> leaseNames, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            IEnumerable<string> leaseNames,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1115,7 +1338,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexTryOnceAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, string leaseName, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexTryOnceAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            string leaseName,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1144,7 +1373,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexTryOnceAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, IEnumerable<string> leaseNames, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexTryOnceAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            IEnumerable<string> leaseNames,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1179,7 +1414,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, string leaseName, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            string leaseName,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1213,7 +1455,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, IEnumerable<string> leaseNames, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            IEnumerable<string> leaseNames,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1252,7 +1501,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, string leaseName, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            string leaseName,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1286,7 +1542,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1325,7 +1588,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexTryOnceAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, string leaseName, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexTryOnceAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            string leaseName,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1359,7 +1629,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor executing the action (for diagnostics and logging).</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
-        public static Task<T> ExecuteWithMutexTryOnceAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexTryOnceAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1400,7 +1677,15 @@ namespace Corvus.Leasing
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
-        public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, string leaseName, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            string leaseName,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1427,7 +1712,7 @@ namespace Corvus.Leasing
             return Retriable.RetryAsync(
                 async () =>
                 {
-                    Lease lease = null;
+                    Lease? lease = null;
                     try
                     {
                         lease = await AcquireLeaseWithRenewalTask(leaseProvider, leaseName, actorName, duration, proposedLeaseId, cts.Token).ConfigureAwait(false);
@@ -1467,7 +1752,15 @@ namespace Corvus.Leasing
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the operation has executed.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "This object is owned by Retry")]
-        public static Task<T> ExecuteWithMutexAsync<T>(this ILeaseProvider leaseProvider, Func<CancellationToken, Task<T>> action, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<T> ExecuteWithMutexAsync<T>(
+            this ILeaseProvider leaseProvider,
+            Func<CancellationToken, Task<T>> action,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1499,10 +1792,16 @@ namespace Corvus.Leasing
             return Retriable.RetryAsync(
                 async () =>
                 {
-                    LeaseSet leaseSet = null;
+                    LeaseSet? leaseSet = null;
                     try
                     {
-                        leaseSet = await AcquireLeaseWithRenewalTask(leaseProvider, leaseNames, actorName, duration, proposedLeaseId, cts.Token).ConfigureAwait(false);
+                        leaseSet = await AcquireLeaseWithRenewalTask(
+                            leaseProvider,
+                            leaseNames,
+                            actorName,
+                            duration,
+                            proposedLeaseId,
+                            cts.Token).ConfigureAwait(false);
                         try
                         {
                             return await action(cts.Token).ConfigureAwait(false);
@@ -1535,7 +1834,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
         /// <returns>A task whose result is an instance of the lease that was acquired.</returns>
-        public static Task<Lease> AcquireAutorenewingLeaseAsync(this ILeaseProvider leaseProvider, CancellationToken token, string leaseName, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<Lease> AcquireAutorenewingLeaseAsync(
+            this ILeaseProvider leaseProvider,
+            CancellationToken token,
+            string leaseName,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1545,7 +1850,15 @@ namespace Corvus.Leasing
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
-            return AcquireAutorenewingLeaseAsync(leaseProvider, token, leaseName, retryStrategy, retryPolicy, duration, actorName, proposedLeaseId);
+            return AcquireAutorenewingLeaseAsync(
+                leaseProvider,
+                token,
+                leaseName,
+                retryStrategy,
+                retryPolicy,
+                duration,
+                actorName,
+                proposedLeaseId);
         }
 
         /// <summary>
@@ -1558,7 +1871,13 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
         /// <returns>A task whose result is an instance of the lease set that was acquired.</returns>
-        public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(this ILeaseProvider leaseProvider, CancellationToken token, IEnumerable<string> leaseNames, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(
+            this ILeaseProvider leaseProvider,
+            CancellationToken token,
+            IEnumerable<string> leaseNames,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1573,7 +1892,15 @@ namespace Corvus.Leasing
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
-            return AcquireAutorenewingLeaseAsync(leaseProvider, token, leaseNames, retryStrategy, retryPolicy, duration, actorName, proposedLeaseId);
+            return AcquireAutorenewingLeaseAsync(
+                leaseProvider,
+                token,
+                leaseNames,
+                retryStrategy,
+                retryPolicy,
+                duration,
+                actorName,
+                proposedLeaseId);
         }
 
         /// <summary>
@@ -1587,7 +1914,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
         /// <returns>A task whose result is an instance of the lease that was acquired.</returns>
-        public static Task<Lease> AcquireAutorenewingLeaseAsync(this ILeaseProvider leaseProvider, CancellationToken token, string leaseName, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<Lease> AcquireAutorenewingLeaseAsync(
+            this ILeaseProvider leaseProvider,
+            CancellationToken token,
+            string leaseName,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1601,7 +1935,15 @@ namespace Corvus.Leasing
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
-            return AcquireAutorenewingLeaseAsync(leaseProvider, token, leaseName, retryStrategy, retryPolicy, duration, actorName, proposedLeaseId);
+            return AcquireAutorenewingLeaseAsync(
+                leaseProvider,
+                token,
+                leaseName,
+                retryStrategy,
+                retryPolicy,
+                duration,
+                actorName,
+                proposedLeaseId);
         }
 
         /// <summary>
@@ -1615,7 +1957,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
         /// <returns>A task whose result is an instance of the lease set that was acquired.</returns>
-        public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(this ILeaseProvider leaseProvider, CancellationToken token, IEnumerable<string> leaseNames, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(
+            this ILeaseProvider leaseProvider,
+            CancellationToken token,
+            IEnumerable<string> leaseNames,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1634,7 +1983,15 @@ namespace Corvus.Leasing
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
-            return AcquireAutorenewingLeaseAsync(leaseProvider, token, leaseNames, retryStrategy, retryPolicy, duration, actorName, proposedLeaseId);
+            return AcquireAutorenewingLeaseAsync(
+                leaseProvider,
+                token,
+                leaseNames,
+                retryStrategy,
+                retryPolicy,
+                duration,
+                actorName,
+                proposedLeaseId);
         }
 
         /// <summary>
@@ -1648,7 +2005,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
         /// <returns>A task whose result is an instance of the lease that was acquired.</returns>
-        public static Task<Lease> AcquireAutorenewingLeaseAsync(this ILeaseProvider leaseProvider, CancellationToken token, string leaseName, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<Lease> AcquireAutorenewingLeaseAsync(
+            this ILeaseProvider leaseProvider,
+            CancellationToken token,
+            string leaseName,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1662,7 +2026,15 @@ namespace Corvus.Leasing
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
-            return AcquireAutorenewingLeaseAsync(leaseProvider, token, leaseName, retryStrategy, retryPolicy, duration, actorName, proposedLeaseId);
+            return AcquireAutorenewingLeaseAsync(
+                leaseProvider,
+                token,
+                leaseName,
+                retryStrategy,
+                retryPolicy,
+                duration,
+                actorName,
+                proposedLeaseId);
         }
 
         /// <summary>
@@ -1676,7 +2048,14 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
         /// <returns>A task whose result is an instance of the lease set that was acquired.</returns>
-        public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(this ILeaseProvider leaseProvider, CancellationToken token, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(
+            this ILeaseProvider leaseProvider,
+            CancellationToken token,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1695,7 +2074,15 @@ namespace Corvus.Leasing
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
-            return AcquireAutorenewingLeaseAsync(leaseProvider, token, leaseNames, retryStrategy, retryPolicy, duration, actorName, proposedLeaseId);
+            return AcquireAutorenewingLeaseAsync(
+                leaseProvider,
+                token,
+                leaseNames,
+                retryStrategy,
+                retryPolicy,
+                duration,
+                actorName,
+                proposedLeaseId);
         }
 
         /// <summary>
@@ -1710,7 +2097,15 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
         /// <returns>A task whose result is an instance of the lease that was acquired.</returns>
-        public static Task<Lease> AcquireAutorenewingLeaseAsync(this ILeaseProvider leaseProvider, CancellationToken token, string leaseName, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<Lease> AcquireAutorenewingLeaseAsync(
+            this ILeaseProvider leaseProvider,
+            CancellationToken token,
+            string leaseName,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1746,7 +2141,15 @@ namespace Corvus.Leasing
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
         /// <returns>A task whose result is an instance of the lease set that was acquired.</returns>
-        public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(this ILeaseProvider leaseProvider, CancellationToken token, IEnumerable<string> leaseNames, IRetryStrategy retryStrategy, IRetryPolicy retryPolicy, TimeSpan? duration = null, string actorName = "", string proposedLeaseId = null)
+        public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(
+            this ILeaseProvider leaseProvider,
+            CancellationToken token,
+            IEnumerable<string> leaseNames,
+            IRetryStrategy retryStrategy,
+            IRetryPolicy retryPolicy,
+            TimeSpan? duration = null,
+            string actorName = "",
+            string? proposedLeaseId = null)
         {
             if (leaseProvider is null)
             {
@@ -1781,12 +2184,18 @@ namespace Corvus.Leasing
             return new Linear(TimeSpan.FromSeconds(Math.Max(1, Math.Round(calculatedDuration.TotalSeconds / 10))), int.MaxValue);
         }
 
-        private static async Task<Lease> AcquireLeaseWithRenewalTask(ILeaseProvider leaseProvider, string leaseName, string actorName, TimeSpan? duration, string proposedLeaseId, CancellationToken token)
+        private static async Task<Lease> AcquireLeaseWithRenewalTask(
+            ILeaseProvider leaseProvider,
+            string? leaseName,
+            string? actorName,
+            TimeSpan? duration,
+            string? proposedLeaseId,
+            CancellationToken token)
         {
             TimeSpan calculatedDuration = duration ?? leaseProvider.DefaultLeaseDuration;
 
             Lease lease = await leaseProvider.AcquireAsync(
-                                    new LeasePolicy { ActorName = actorName, Duration = calculatedDuration, Name = leaseName },
+                                    new LeasePolicy(leaseName) { ActorName = actorName, Duration = calculatedDuration },
                                     proposedLeaseId).ConfigureAwait(false);
 
             StartRenewalBackgroundTask(token, lease, GetRenewalPeriod(lease.LeasePolicy, leaseProvider));
@@ -1794,13 +2203,19 @@ namespace Corvus.Leasing
             return lease;
         }
 
-        private static async Task<LeaseSet> AcquireLeaseWithRenewalTask(ILeaseProvider leaseProvider, IEnumerable<string> leaseNames, string actorName, TimeSpan? duration, string proposedLeaseId, CancellationToken token)
+        private static async Task<LeaseSet> AcquireLeaseWithRenewalTask(
+            ILeaseProvider leaseProvider,
+            IEnumerable<string> leaseNames,
+            string actorName,
+            TimeSpan? duration,
+            string? proposedLeaseId,
+            CancellationToken token)
         {
             TimeSpan calculatedDuration = duration ?? leaseProvider.DefaultLeaseDuration;
             IEnumerable<Task<Lease>> tasks = leaseNames.Select(leaseName =>
             {
                 return leaseProvider.AcquireAsync(
-                                        new LeasePolicy { ActorName = actorName, Duration = calculatedDuration, Name = leaseName },
+                                        new LeasePolicy(leaseName) { ActorName = actorName, Duration = calculatedDuration },
                                         proposedLeaseId);
             });
 

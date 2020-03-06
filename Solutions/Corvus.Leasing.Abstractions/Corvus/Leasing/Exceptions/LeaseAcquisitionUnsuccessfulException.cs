@@ -61,6 +61,6 @@ namespace Corvus.Leasing.Exceptions
         /// <summary>
         /// Gets the lease policy used during the attempt to acquire the lease.
         /// </summary>
-        public LeasePolicy LeasePolicy { get; }
+        public LeasePolicy? LeasePolicy { get; }
     }
 }

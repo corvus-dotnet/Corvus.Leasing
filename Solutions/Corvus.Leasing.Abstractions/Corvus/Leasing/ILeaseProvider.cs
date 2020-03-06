@@ -76,7 +76,7 @@ namespace Corvus.Leasing
         /// <param name="leasePolicy">The lease policy.</param>
         /// <param name="proposedLeaseId">A proposed ID for the lease.</param>
         /// <returns>A task which completes when the lease is acquired.</returns>
-        Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string proposedLeaseId = null);
+        Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string? proposedLeaseId = null);
 
         /// <summary>
         /// Extends the lease for a period according to the lease's policy.
