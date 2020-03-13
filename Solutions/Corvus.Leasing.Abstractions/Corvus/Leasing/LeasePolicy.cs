@@ -5,18 +5,19 @@
 namespace Corvus.Leasing
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Defines various options used in the creation and acquisition of a lease.
     /// </summary>
     public class LeasePolicy
     {
-        private string name;
+        private string? name;
 
         /// <summary>
         /// Gets or sets the name for the actor requesting the lease.
         /// </summary>
-        public string ActorName { get; set; }
+        public string? ActorName { get; set; }
 
         /// <summary>
         /// Gets or sets the duration of the lease.
@@ -28,11 +29,17 @@ namespace Corvus.Leasing
         /// Gets or sets the name of the lease.
         /// </summary>
         /// <remarks>Different lease implementation will have different validity rules about the lease name.</remarks>
+        [AllowNull]
         public string Name
         {
             get
             {
-                return this.name;
+                if (string.IsNullOrEmpty(this.name))
+                {
+                    this.name = Guid.NewGuid().ToString();
+                }
+
+                return this.name!;
             }
 
             set

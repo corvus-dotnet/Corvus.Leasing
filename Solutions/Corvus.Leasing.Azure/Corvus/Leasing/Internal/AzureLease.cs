@@ -80,9 +80,9 @@ namespace Corvus.Leasing.Internal
             DateTimeOffset? lastAcquired = lines[2] != NullString ? (DateTimeOffset?)DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(lines[2])) : null;
             var leasePolicy = new LeasePolicy
             {
+                Name = lines[5],
                 ActorName = lines[3],
                 Duration = lines[4] != NullString ? (TimeSpan?)TimeSpan.FromMilliseconds(long.Parse(lines[4])) : null,
-                Name = lines[5],
             };
 
             return new AzureLease(leaseProvider, leasePolicy, id, lastAcquired);
@@ -102,14 +102,6 @@ namespace Corvus.Leasing.Internal
             builder.AppendLine(this.LeasePolicy.Duration.HasValue ? this.LeasePolicy.Duration.Value.TotalMilliseconds.ToString() : NullString);
             builder.AppendLine(this.LeasePolicy.Name);
             return builder.ToString().Base64UrlEncode();
-        }
-
-        /// <summary>
-        /// Clears the id.
-        /// </summary>
-        internal void ClearId()
-        {
-            this.Id = null;
         }
 
         /// <summary>

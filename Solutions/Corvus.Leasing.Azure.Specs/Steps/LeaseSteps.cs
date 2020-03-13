@@ -164,13 +164,6 @@ namespace Corvus.Leasing.Azure.Specs.Steps
             Assert.Null(lease.Expires);
         }
 
-        [Then(@"the lease ID should not be set")]
-        public void ThenTheLeaseIDShouldNotBeSet()
-        {
-            var lease = this.scenarioContext.Get<Lease>();
-            Assert.Null(lease.Id);
-        }
-
         [Then(@"the lease last acquired date should be null")]
         public void ThenTheLeaseLastAcquiredDateShouldBeNull()
         {
@@ -204,7 +197,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         public void ThenTheLeaseShouldNoLongerBeAcquired()
         {
             var lease = this.scenarioContext.Get<Lease>();
-            Assert.Null(lease.Id);
+            Assert.IsTrue(lease.Released);
         }
 
         [When(@"I acquire the lease")]

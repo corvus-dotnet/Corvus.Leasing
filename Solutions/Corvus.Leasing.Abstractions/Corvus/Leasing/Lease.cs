@@ -31,9 +31,9 @@ namespace Corvus.Leasing
         }
 
         /// <summary>
-        /// Gets or sets the lease id.
+        /// Gets the lease id.
         /// </summary>
-        public string Id { get; protected set; }
+        public string Id { get; }
 
         /// <summary>
         /// Gets the platform-specific lease provider for this lease.
@@ -70,25 +70,33 @@ namespace Corvus.Leasing
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the lease has been explicitly released.
+        /// </summary>
+        /// <remarks>
+        /// This flag is only set if the lease is explicitly released; if it expires, this flag will still be true. If you need
+        /// to know whether the lease is still held, check the <see cref="HasLease"/> property instead.
+        /// </remarks>
+        public bool Released { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether the lease has been acquired.
         /// </summary>
         public bool HasLease
         {
-            get { return !this.LeaseHasExpired() && !string.IsNullOrEmpty(this.Id); }
+            get { return !this.LeaseHasExpired() && !this.Released; }
         }
 
         /// <summary>
         /// Release the lease.
         /// </summary>
         /// <returns>A <see cref="Task"/> that completes once the lease is released.</returns>
-        public Task ReleaseAsync()
+        public async Task ReleaseAsync()
         {
             if (this.HasLease)
             {
-                return this.LeaseProvider.ReleaseAsync(this);
+                await this.LeaseProvider.ReleaseAsync(this);
+                this.Released = true;
             }
-
-            return Task.CompletedTask;
         }
 
         /// <summary>
