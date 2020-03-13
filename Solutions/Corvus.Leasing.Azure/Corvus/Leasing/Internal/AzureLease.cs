@@ -105,14 +105,6 @@ namespace Corvus.Leasing.Internal
         }
 
         /// <summary>
-        /// Clears the id.
-        /// </summary>
-        internal void ClearId()
-        {
-            this.Id = null;
-        }
-
-        /// <summary>
         /// Sets the last acquired time.
         /// </summary>
         /// <param name="lastAcquired">The last time the lease was acquired, or null if the lease has been released.</param>

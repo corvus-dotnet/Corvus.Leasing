@@ -197,7 +197,6 @@ namespace Corvus.Leasing.Internal
             await Retriable.RetryAsync(() => blob.ReleaseLeaseAsync(new AccessCondition { LeaseId = lease.Id })).ConfigureAwait(false);
 
             al.SetLastAcquired(null);
-            al.ClearId();
             this.logger.LogDebug($"Released lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
         }
 
