@@ -32,7 +32,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         public async Task GivenActorAHasAlreadyAcquiredALeaseForAnOperationWithTheSameName()
         {
             var otherPolicy = this.scenarioContext.Get<LeasePolicy>();
-            var policy = new LeasePolicy(otherPolicy.Name) { Duration = TimeSpan.FromSeconds(15) };
+            var policy = new LeasePolicy { Name = otherPolicy.Name, Duration = TimeSpan.FromSeconds(15) };
             var leaseProvider = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
             var lease = await leaseProvider.AcquireAsync(policy);
             this.scenarioContext.Set(lease, "ActorALease");
@@ -42,7 +42,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
         public void GivenIAmActorBTryingToPerformAnOperationCalled(string leaseName)
         {
             leaseName += $"_{Guid.NewGuid()}";
-            var policy = new LeasePolicy(leaseName);
+            var policy = new LeasePolicy { Name = leaseName };
             this.scenarioContext.Set(policy);
         }
 
@@ -59,7 +59,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
                 leaseName += $"_{Guid.NewGuid()}";
             }
 
-            var policy = new LeasePolicy(leaseName);
+            var policy = new LeasePolicy { Name = leaseName };
             this.scenarioContext.Set(policy);
         }
 

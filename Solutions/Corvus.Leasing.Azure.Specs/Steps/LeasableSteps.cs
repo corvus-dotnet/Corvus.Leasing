@@ -92,7 +92,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
             this.scenarioContext.TryGetValue(RetryPolicy, out retryPolicy);
             this.scenarioContext.TryGetValue(RetryStrategy, out retryStrategy);
 
-            var policy = new LeasePolicy(leaseName) { ActorName = "Actor A", Duration = leaseDuration };
+            var policy = new LeasePolicy { Name = leaseName, ActorName = "Actor A", Duration = leaseDuration };
 
             var task = provider.ExecuteWithMutexAsync(this.DoSomething, policy, retryStrategy, retryPolicy);
             SetContinuations(this.scenarioContext, task);
@@ -308,7 +308,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
 
             if (leaseName != null || leaseDuration != default(TimeSpan))
             {
-                policy = new LeasePolicy(leaseName) { ActorName = "Actor A", Duration = leaseDuration };
+                policy = new LeasePolicy { Name = leaseName, ActorName = "Actor A", Duration = leaseDuration };
             }
 
             try

@@ -2194,8 +2194,11 @@ namespace Corvus.Leasing
         {
             TimeSpan calculatedDuration = duration ?? leaseProvider.DefaultLeaseDuration;
 
+            var leasePolicy = new LeasePolicy { ActorName = actorName, Duration = calculatedDuration };
+            leasePolicy.Name = leaseName;
+
             Lease lease = await leaseProvider.AcquireAsync(
-                                    new LeasePolicy(leaseName) { ActorName = actorName, Duration = calculatedDuration },
+                                    leasePolicy,
                                     proposedLeaseId).ConfigureAwait(false);
 
             StartRenewalBackgroundTask(token, lease, GetRenewalPeriod(lease.LeasePolicy, leaseProvider));
@@ -2215,7 +2218,7 @@ namespace Corvus.Leasing
             IEnumerable<Task<Lease>> tasks = leaseNames.Select(leaseName =>
             {
                 return leaseProvider.AcquireAsync(
-                                        new LeasePolicy(leaseName) { ActorName = actorName, Duration = calculatedDuration },
+                                        new LeasePolicy { Name = leaseName, ActorName = actorName, Duration = calculatedDuration },
                                         proposedLeaseId);
             });
 

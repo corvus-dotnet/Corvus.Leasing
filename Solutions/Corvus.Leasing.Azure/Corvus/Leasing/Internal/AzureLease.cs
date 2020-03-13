@@ -78,8 +78,9 @@ namespace Corvus.Leasing.Internal
 
             string id = lines[1];
             DateTimeOffset? lastAcquired = lines[2] != NullString ? (DateTimeOffset?)DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(lines[2])) : null;
-            var leasePolicy = new LeasePolicy(lines[5])
+            var leasePolicy = new LeasePolicy
             {
+                Name = lines[5],
                 ActorName = lines[3],
                 Duration = lines[4] != NullString ? (TimeSpan?)TimeSpan.FromMilliseconds(long.Parse(lines[4])) : null,
             };
