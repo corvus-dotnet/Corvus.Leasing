@@ -17,7 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Corvus.Configuration.TestEnvironment" Version="0.3.0" />
     <PackageReference Include="Corvus.SpecFlow.Extensions" Version="0.6.0" />
-    <PackageReference Include="Endjin.RecommendedPractices" Version="0.1.0">
+    <PackageReference Include="Endjin.RecommendedPractices" Version="0.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
