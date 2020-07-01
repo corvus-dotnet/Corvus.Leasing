@@ -27,3 +27,4 @@ jobs:
         displayName: 'Set Azure Connection String Environment Variable'
         env:
           ENDJIN_AZURESTORAGECONNECTIONSTRING: $(Endjin_AzureStorageConnectionString)
+    netSdkVersion: '3.x'
