@@ -36,7 +36,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
                         };
 
                     var configurationBuilder = new ConfigurationBuilder();
-                    configurationBuilder.AddTestConfiguration(fallbackSettings);
+                    configurationBuilder.AddConfigurationForTest(null, fallbackSettings);
                     IConfigurationRoot config = configurationBuilder.Build();
                     serviceCollection.AddSingleton(config);
 
