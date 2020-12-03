@@ -1,7 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>latest</LangVersion>
@@ -15,7 +14,6 @@
     -->
     <NoWarn>SA0001;SA1204;SA1600;SA1602;CS1591</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Corvus.Configuration.TestEnvironment" Version="1.0.0" />
     <PackageReference Include="Corvus.SpecFlow.Extensions" Version="0.6.0" />
@@ -23,26 +21,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="SpecFlow" Version="3.3.30" />
-    <PackageReference Include="SpecFlow.NUnit" Version="3.3.30" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.3.30" />
-    <PackageReference Include="nunit" Version="3.12.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0-preview-20200226-03" />
-    <PackageReference Include="coverlet.msbuild" Version="2.9.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Corvus.Testing.SpecFlow.NUnit" Version="1.1.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Corvus.Leasing.Azure\Corvus.Leasing.Azure.csproj" />
     <ProjectReference Include="..\Corvus.Leasing.InMemory\Corvus.Leasing.InMemory.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="specflow.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
