@@ -6,7 +6,8 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
 {
     using System.Collections.Generic;
     using Corvus.Configuration;
-    using Corvus.SpecFlow.Extensions;
+    using Corvus.Testing.SpecFlow;
+
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 

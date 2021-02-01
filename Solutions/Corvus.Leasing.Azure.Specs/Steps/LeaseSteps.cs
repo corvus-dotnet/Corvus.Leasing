@@ -11,7 +11,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
     using System.Threading.Tasks;
     using Corvus.Leasing;
     using Corvus.Leasing.Internal;
-    using Corvus.SpecFlow.Extensions;
+    using Corvus.Testing.SpecFlow;
     using Microsoft.Extensions.DependencyInjection;
     using NUnit.Framework;
     using TechTalk.SpecFlow;
