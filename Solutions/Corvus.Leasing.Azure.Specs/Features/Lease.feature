@@ -1,4 +1,4 @@
-﻿@setupContainer
+﻿@perFeatureContainer
 @ReleaseLeases
 Feature: Lease
 	In order to allow an actor in the system to perform an exclusive operation 

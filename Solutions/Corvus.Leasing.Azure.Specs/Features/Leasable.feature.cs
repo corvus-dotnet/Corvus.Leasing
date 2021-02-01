@@ -21,14 +21,14 @@ namespace Corvus.Leasing.Specs.Features
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Leasable")]
-    [NUnit.Framework.CategoryAttribute("setupContainer")]
+    [NUnit.Framework.CategoryAttribute("perFeatureContainer")]
     public partial class LeasableFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "setupContainer"};
+                "perFeatureContainer"};
         
 #line 1 "Leasable.feature"
 #line hidden
@@ -39,7 +39,7 @@ namespace Corvus.Leasing.Specs.Features
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Leasable", "\tIn order to avoid concurrency issues\r\n\tAs an actor in the system\r\n\tI want to hav" +
                     "e an exclusive lease on a long running task", ProgrammingLanguage.CSharp, new string[] {
-                        "setupContainer"});
+                        "perFeatureContainer"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

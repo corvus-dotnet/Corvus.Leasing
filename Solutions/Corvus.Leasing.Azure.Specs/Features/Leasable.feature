@@ -1,4 +1,4 @@
-﻿@setupContainer
+﻿@perFeatureContainer
 
 Feature: Leasable
 	In order to avoid concurrency issues

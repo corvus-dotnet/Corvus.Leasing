@@ -21,7 +21,7 @@ namespace Corvus.Leasing.Specs.Features
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Lease")]
-    [NUnit.Framework.CategoryAttribute("setupContainer")]
+    [NUnit.Framework.CategoryAttribute("perFeatureContainer")]
     [NUnit.Framework.CategoryAttribute("ReleaseLeases")]
     public partial class LeaseFeature
     {
@@ -29,7 +29,7 @@ namespace Corvus.Leasing.Specs.Features
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "setupContainer",
+                "perFeatureContainer",
                 "ReleaseLeases"};
         
 #line 1 "Lease.feature"
@@ -42,7 +42,7 @@ namespace Corvus.Leasing.Specs.Features
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Lease", "\tIn order to allow an actor in the system to perform an exclusive operation \r\n\tAs" +
                     " an actor in the system\r\n\tI want to obtain an exclusive lease for the duration o" +
                     "f the operation I have to perform", ProgrammingLanguage.CSharp, new string[] {
-                        "setupContainer",
+                        "perFeatureContainer",
                         "ReleaseLeases"});
             testRunner.OnFeatureStart(featureInfo);
         }
