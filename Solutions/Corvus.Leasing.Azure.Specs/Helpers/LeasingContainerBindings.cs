@@ -6,7 +6,8 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
 {
     using System.Collections.Generic;
     using Corvus.Configuration;
-    using Corvus.SpecFlow.Extensions;
+    using Corvus.Testing.SpecFlow;
+
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -23,7 +24,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
         /// </summary>
         /// <remarks>We expect features run in parallel to be executing in separate app domains.</remarks>
         /// <param name="featureContext">The SpecFlow test context.</param>
-        [BeforeFeature("@setupContainer", Order = ContainerBeforeFeatureOrder.PopulateServiceCollection)]
+        [BeforeFeature("@perFeatureContainer", Order = ContainerBeforeFeatureOrder.PopulateServiceCollection)]
         public static void SetupFeature(FeatureContext featureContext)
         {
             ContainerBindings.ConfigureServices(
@@ -55,7 +56,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
         /// </summary>
         /// <remarks>We expect features run in parallel to be executing in separate app domains.</remarks>
         /// <param name="featureContext">The SpecFlow test context.</param>
-        [BeforeFeature("@setupContainer", Order = ContainerBeforeFeatureOrder.ServiceProviderAvailable)]
+        [BeforeFeature("@perFeatureContainer", Order = ContainerBeforeFeatureOrder.ServiceProviderAvailable)]
         public static void SetupTest(FeatureContext featureContext)
         {
             ContainerBindings.GetServiceProvider(featureContext).GetRequiredService<ITestNameProvider>().BeginTestSesion();
@@ -66,7 +67,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
         /// </summary>
         /// <param name="featureContext">The feature context for the current feature.</param>
         /// <remarks>We expect features run in parallel to be executing in separate app domains.</remarks>
-        [AfterFeature("@setupContainer", Order = 1)]
+        [AfterFeature("@perFeatureContainer", Order = 1)]
         public static void TeardownContainer(FeatureContext featureContext)
         {
             featureContext.RunAndStoreExceptions(

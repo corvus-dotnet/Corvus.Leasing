@@ -18,7 +18,7 @@ namespace Corvus.Leasing.Azure.Specs.Steps
     using Corvus.Leasing.Retry.Policies;
     using Corvus.Retry.Policies;
     using Corvus.Retry.Strategies;
-    using Corvus.SpecFlow.Extensions;
+    using Corvus.Testing.SpecFlow;
     using Microsoft.Extensions.DependencyInjection;
 
     using NUnit.Framework;
