@@ -1,7 +1,7 @@
 # Corvus.Leasing
 
-[![Build Status](https://dev.azure.com/endjin-labs/Corvus.Leasing/_apis/build/status/corvus-dotnet.Corvus.Leasing?branchName=master)](https://dev.azure.com/endjin-labs/Corvus.Leasing/_build/latest?definitionId=4&branchName=master)
-[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Leasing/master/LICENSE)
+[![Build Status](https://dev.azure.com/endjin-labs/Corvus.Leasing/_apis/build/status/corvus-dotnet.Corvus.Leasing?branchName=main)](https://dev.azure.com/endjin-labs/Corvus.Leasing/_build/latest?definitionId=4&branchName=main)
+[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Leasing/main/LICENSE)
 [![IMM](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Leasing/total?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Leasing/total?cache=false)
 
 Leasing patterns for mediating access to exclusive resources in distributed processes. A generic abstraction, with an Azure blob-based implementation.
@@ -57,7 +57,7 @@ It is also possible that the leasing operation will fail during initialization. 
 
 ## Licenses
 
-[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Leasing/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Leasing/main/LICENSE)
 
 Corvus.Leasing is available under the Apache 2.0 open source license.
 
