@@ -21,7 +21,7 @@ namespace Corvus.Leasing.Retry.Policies
         /// <returns>Whether a retry attempt should be made.</returns>
         public bool CanRetry(Exception exception)
         {
-            return !(exception is LeaseAcquisitionUnsuccessfulException);
+            return exception is not LeaseAcquisitionUnsuccessfulException;
         }
     }
 }

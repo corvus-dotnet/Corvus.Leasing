@@ -16,7 +16,7 @@ namespace Corvus.Leasing.Internal
     /// </summary>
     public class InMemoryLeaseProvider : ILeaseProvider
     {
-        private static readonly ConcurrentDictionary<string, Lease> Leases = new ConcurrentDictionary<string, Lease>();
+        private static readonly ConcurrentDictionary<string, Lease> Leases = new();
 
         /// <inheritdoc/>
         public TimeSpan DefaultLeaseDuration => TimeSpan.FromSeconds(59);

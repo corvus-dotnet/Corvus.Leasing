@@ -16,7 +16,7 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public bool CanRetry(Exception exception)
         {
-            return !(exception is InitializationFailureException);
+            return exception is not InitializationFailureException;
         }
     }
 }

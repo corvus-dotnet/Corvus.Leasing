@@ -20,7 +20,7 @@ namespace Corvus.Leasing.Internal
         /// <returns>Whether a retry attempt should be made.</returns>
         public bool CanRetry(Exception exception)
         {
-            return !(exception is ArgumentOutOfRangeException);
+            return exception is not ArgumentOutOfRangeException;
         }
     }
 }
