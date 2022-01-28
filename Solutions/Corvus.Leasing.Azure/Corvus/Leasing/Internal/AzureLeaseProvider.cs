@@ -102,11 +102,11 @@ namespace Corvus.Leasing.Internal
                     new AggregatePolicy { Policies = { new DoNotRetryOnInvalidOperationPolicy(), new DoNotRetryOnConflictPolicy(), new DoNotRetryOnInitializationFailurePolicy() } }).ConfigureAwait(false);
 
                 string id = await Retriable.RetryAsync(
-                        () =>
+                        async () =>
                         {
                             try
                             {
-                                return blob.AcquireLeaseAsync(leasePolicy.Duration, proposedLeaseId);
+                                return await blob.AcquireLeaseAsync(leasePolicy.Duration, proposedLeaseId);
                             }
                             catch (StorageException ex) when (ex.RequestInformation.HttpStatusCode == 400)
                             {
@@ -185,7 +185,7 @@ namespace Corvus.Leasing.Internal
                 throw new ArgumentNullException(nameof(lease));
             }
 
-            if (!(lease is AzureLease al))
+            if (lease is not AzureLease al)
             {
                 throw new ArgumentException("Only Leases of type 'AzureLease' can be released by the AzureLeaseProvider.");
             }

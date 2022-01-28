@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Leasing.Abstractions", "Corvus.Leasing.Abstractions\Corvus.Leasing.Abstractions.csproj", "{FEAA6690-C45F-4257-B92D-E14C4E01A15A}"
 EndProject
@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Leasing.Azure.Specs"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{0D389FE7-7271-4654-9BAF-D791682EB334}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\azure-pipelines.yml = ..\azure-pipelines.yml
+		..\GitVersion.yml = ..\GitVersion.yml
 	EndProjectSection
 EndProject
 Global

@@ -21,7 +21,7 @@ namespace Corvus.Leasing.Internal
         /// <returns>Whether a retry attempt should be made.</returns>
         public bool CanRetry(Exception exception)
         {
-            return !(exception is StorageException storageException) || storageException.RequestInformation.HttpStatusCode != 409;
+            return exception is not StorageException storageException || storageException.RequestInformation.HttpStatusCode != 409;
         }
     }
 }
