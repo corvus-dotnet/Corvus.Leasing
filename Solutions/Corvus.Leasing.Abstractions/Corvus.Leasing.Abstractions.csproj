@@ -18,7 +18,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Corvus.Extensions" Version="1.1.9" />
+    <PackageReference Include="Corvus.Extensions" Version="1.1.10" />
     <PackageReference Include="Corvus.Retry" Version="1.0.2" />
     <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.2">
       <PrivateAssets>all</PrivateAssets>
