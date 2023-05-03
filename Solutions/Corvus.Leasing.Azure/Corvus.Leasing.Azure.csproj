@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
 
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
 
@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Corvus.Configuration" Version="1.2.5" />
+    <PackageReference Include="Corvus.Configuration" Version="1.2.6" />
     <PackageReference Include="Corvus.Extensions" Version="1.1.10" />
     <PackageReference Include="Corvus.Retry" Version="1.0.2" />
     <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.4">
