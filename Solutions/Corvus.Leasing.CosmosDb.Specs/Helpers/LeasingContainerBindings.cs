@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.Leasing.Azure.Specs.Helpers
+namespace Corvus.Leasing.CosmosDb.Specs.Helpers
 {
     using System.Collections.Generic;
     using Corvus.Configuration;
@@ -33,7 +33,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
                 {
                     var fallbackSettings = new Dictionary<string, string>
                         {
-                            { "STORAGEACCOUNTCONNECTIONSTRING", "UseDevelopmentStorage=true" },
+                            { "COSMOSDBCONNECTIONSTRING", "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==" },
                         };
 
                     var configurationBuilder = new ConfigurationBuilder();
@@ -41,13 +41,14 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
                     IConfigurationRoot config = configurationBuilder.Build();
                     serviceCollection.AddSingleton(config);
 
-                    var options = new AzureLeaseProviderOptions
+                    var options = new CosmosDbLeaseProviderOptions
                     {
-                        StorageAccountConnectionString = config["STORAGEACCOUNTCONNECTIONSTRING"],
+                        RootPartitionKeyValue = null,
+                        CosmosDbConnectionString = config["COSMOSDBCONNECTIONSTRING"],
                     };
 
                     serviceCollection.AddTestNameProvider();
-                    serviceCollection.AddAzureLeasing(options);
+                    serviceCollection.AddCosmosDbLeasing(options);
                 });
         }
 

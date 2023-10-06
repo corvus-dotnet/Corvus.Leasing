@@ -14,6 +14,11 @@ namespace Corvus.Leasing
         /// <summary>
         /// Gets a value for the root partition key, or null if no root partition key is in use.
         /// </summary>
-        public string? RootPartitionKeyValue { get; }
+        public string? RootPartitionKeyValue { get; init; }
+
+        /// <summary>
+        /// Gets a value for the connection string to connect to the CosmosDb account.
+        /// </summary>
+        public string? CosmosDbConnectionString { get; init; }
     }
 }

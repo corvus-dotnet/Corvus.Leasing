@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{0D389F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corvus.Leasing.CosmosDb", "Corvus.Leasing.CosmosDb\Corvus.Leasing.CosmosDb.csproj", "{9970B460-A1E1-40B4-95BB-6E9B25FCEBFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corvus.Leasing.CosmosDb.Specs", "Corvus.Leasing.CosmosDb.Specs\Corvus.Leasing.CosmosDb.Specs.csproj", "{A4773716-4CF8-41EF-B951-3CBA6111CF34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{9970B460-A1E1-40B4-95BB-6E9B25FCEBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9970B460-A1E1-40B4-95BB-6E9B25FCEBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9970B460-A1E1-40B4-95BB-6E9B25FCEBFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4773716-4CF8-41EF-B951-3CBA6111CF34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4773716-4CF8-41EF-B951-3CBA6111CF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4773716-4CF8-41EF-B951-3CBA6111CF34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4773716-4CF8-41EF-B951-3CBA6111CF34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
