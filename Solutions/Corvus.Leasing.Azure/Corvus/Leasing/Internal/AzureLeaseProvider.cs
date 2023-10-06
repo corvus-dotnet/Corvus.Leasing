@@ -8,14 +8,16 @@ namespace Corvus.Leasing.Internal
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
+    using Azure;
+    using Azure.Storage.Blobs;
+    using Azure.Storage.Blobs.Models;
+    using Azure.Storage.Blobs.Specialized;
     using Corvus.Configuration;
     using Corvus.Leasing.Exceptions;
     using Corvus.Retry;
     using Corvus.Retry.Policies;
     using Corvus.Retry.Strategies;
     using Microsoft.Extensions.Logging;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
 
     /// <summary>
     /// The platform specific implementation used for lease operations.
@@ -26,9 +28,7 @@ namespace Corvus.Leasing.Internal
         private readonly AzureLeaseProviderOptions options;
         private readonly INameProvider nameProvider;
         private bool initialised;
-        private CloudStorageAccount? storageAccount;
-        private CloudBlobClient? client;
-        private CloudBlobContainer? container;
+        private BlobContainerClient? container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureLeaseProvider"/> class.
@@ -70,20 +70,20 @@ namespace Corvus.Leasing.Internal
                 await this.InitialiseAsync().ConfigureAwait(false);
 
                 // Once Initialise has been called, we know this.container is set.
-                CloudBlockBlob blob = this.container!.GetBlockBlobReference((leasePolicy.Name ?? Guid.NewGuid().ToString()).ToLowerInvariant());
+                BlobClient blobClient = this.container!.GetBlobClient((leasePolicy.Name ?? Guid.NewGuid().ToString()).ToLowerInvariant());
 
                 await Retriable.RetryAsync(
                     async () =>
                     {
                         try
                         {
-                            if (!await blob.ExistsAsync().ConfigureAwait(false))
+                            if (!await blobClient.ExistsAsync().ConfigureAwait(false))
                             {
                                 using var ms = new MemoryStream();
-                                await blob.UploadFromStreamAsync(ms).ConfigureAwait(false);
+                                await blobClient.UploadAsync(ms).ConfigureAwait(false);
                             }
                         }
-                        catch (StorageException ex) when (ex.RequestInformation.HttpStatusCode == 400)
+                        catch (RequestFailedException ex) when (ex.Status == 400)
                         {
                             // Turn that into an invalid operation exception for standard "bad request" semantics (bad name)
                             throw new InvalidOperationException();
@@ -103,9 +103,11 @@ namespace Corvus.Leasing.Internal
                         {
                             try
                             {
-                                return await blob.AcquireLeaseAsync(leasePolicy.Duration, proposedLeaseId);
+                                BlobLeaseClient leaseClient = blobClient.GetBlobLeaseClient(proposedLeaseId);
+                                BlobLease lease = await leaseClient.AcquireAsync(leasePolicy.Duration ?? this.DefaultLeaseDuration).ConfigureAwait(false);
+                                return lease.LeaseId;
                             }
-                            catch (StorageException ex) when (ex.RequestInformation.HttpStatusCode == 400)
+                            catch (RequestFailedException ex) when (ex.Status == 400)
                             {
                                 // Turn that into an invalid operation exception for standard "bad request" semantics (bad name)
                                 throw new InvalidOperationException();
@@ -127,9 +129,9 @@ namespace Corvus.Leasing.Internal
 
                 return lease;
             }
-            catch (StorageException exception)
+            catch (RequestFailedException exception)
             {
-                if (exception.RequestInformation.HttpStatusCode == 409)
+                if (exception.Status == 409)
                 {
                     this.logger.LogError($"Failed to acquire lease for '{leasePolicy.ActorName}'. The lease was held by another party. The lease name was '{leasePolicy.Name}', duration '{leasePolicy.Duration}', and proposed id '{proposedLeaseId}'");
                     throw new LeaseAcquisitionUnsuccessfulException(leasePolicy, exception);
@@ -154,8 +156,9 @@ namespace Corvus.Leasing.Internal
 
             this.logger.LogDebug($"Extending lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
             await this.InitialiseAsync().ConfigureAwait(false);
-            CloudBlockBlob blob = this.container!.GetBlockBlobReference(lease.LeasePolicy.Name.ToLowerInvariant());
-            await Retriable.RetryAsync(() => blob.RenewLeaseAsync(new AccessCondition { LeaseId = lease.Id })).ConfigureAwait(false);
+            BlobClient blobClient = this.container!.GetBlobClient(lease.LeasePolicy.Name.ToLowerInvariant());
+            BlobLeaseClient blobLeaseClient = blobClient.GetBlobLeaseClient(lease.Id);
+            await Retriable.RetryAsync(() => blobLeaseClient.RenewAsync()).ConfigureAwait(false);
             (lease as AzureLease)?.SetLastAcquired(DateTimeOffset.Now);
             this.logger.LogDebug($"Extended lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
         }
@@ -180,9 +183,10 @@ namespace Corvus.Leasing.Internal
 
             this.logger.LogDebug($"Releasing lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
             await this.InitialiseAsync().ConfigureAwait(false);
-            CloudBlockBlob blob = this.container!.GetBlockBlobReference(lease.LeasePolicy.Name.ToLowerInvariant());
+            BlobClient blobClient = this.container!.GetBlobClient(lease.LeasePolicy.Name.ToLowerInvariant());
+            BlobLeaseClient blobLeaseClient = blobClient.GetBlobLeaseClient(lease.Id);
 
-            await Retriable.RetryAsync(() => blob.ReleaseLeaseAsync(new AccessCondition { LeaseId = lease.Id })).ConfigureAwait(false);
+            await Retriable.RetryAsync(() => blobLeaseClient.ReleaseAsync()).ConfigureAwait(false);
 
             al.SetLastAcquired(null);
             this.logger.LogDebug($"Released lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
@@ -201,15 +205,6 @@ namespace Corvus.Leasing.Internal
             }
         }
 
-        /// <summary>
-        /// Gets the cloud storage account for the configured connection string.
-        /// </summary>
-        /// <returns>An instance of the cloud storage account for blob-based leasing.</returns>
-        protected virtual CloudStorageAccount GetStorageAccount()
-        {
-            return CloudStorageAccount.Parse(this.options.StorageAccountConnectionString);
-        }
-
         private string GetContainerName()
         {
             string cn = this.ContainerName ?? "genericleases";
@@ -222,20 +217,11 @@ namespace Corvus.Leasing.Internal
             {
                 try
                 {
-                    this.storageAccount = this.GetStorageAccount();
-
-                    this.client = Retriable.Retry(() => this.storageAccount.CreateCloudBlobClient());
-
                     string containerName = this.GetContainerName();
-                    this.container = Retriable.Retry(() => this.client.GetContainerReference(containerName));
 
-                    if (await this.container.CreateIfNotExistsAsync().ConfigureAwait(false))
-                    {
-                        var containerPermissions = new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Off };
+                    this.container = new(this.options.StorageAccountConnectionString, containerName);
 
-                        await Retriable.RetryAsync(() => this.container.SetPermissionsAsync(containerPermissions)).ConfigureAwait(false);
-                    }
-
+                    Response<BlobContainerInfo> result = await Retriable.RetryAsync(() => this.container.CreateIfNotExistsAsync(PublicAccessType.None)).ConfigureAwait(false);
                     this.initialised = true;
                 }
                 catch (Exception ex)
