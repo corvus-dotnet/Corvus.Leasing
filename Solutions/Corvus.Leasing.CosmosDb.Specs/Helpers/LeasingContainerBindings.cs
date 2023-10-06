@@ -48,7 +48,8 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
                     };
 
                     serviceCollection.AddTestNameProvider();
-                    serviceCollection.AddCosmosDbLeasing(options);
+                    //// TODO: Figure out how we're going to register this
+                    //// serviceCollection.AddCosmosDbLeasing(options);
                 });
         }
 
