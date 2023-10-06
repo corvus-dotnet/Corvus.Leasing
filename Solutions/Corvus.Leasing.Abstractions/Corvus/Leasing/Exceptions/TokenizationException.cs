@@ -5,7 +5,6 @@
 namespace Corvus.Leasing
 {
     using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     /// An exception raised when a lease token fails to encode/decode.
@@ -35,16 +34,6 @@ namespace Corvus.Leasing
         /// <param name="innerException">The inner exception.</param>
         public TokenizationException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenizationException"/> class.
-        /// </summary>
-        /// <param name="info">The serialization information.</param>
-        /// <param name="context">The serialization context.</param>
-        protected TokenizationException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

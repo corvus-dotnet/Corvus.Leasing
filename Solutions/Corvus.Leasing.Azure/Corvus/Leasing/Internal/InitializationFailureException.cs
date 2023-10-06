@@ -5,7 +5,6 @@
 namespace Corvus.Leasing.Internal
 {
     using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     /// An exception raised when leasing fails to initialize.
@@ -35,16 +34,6 @@ namespace Corvus.Leasing.Internal
         /// <param name="innerException">The inner exception.</param>
         public InitializationFailureException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InitializationFailureException"/> class.
-        /// </summary>
-        /// <param name="info">The serialization information.</param>
-        /// <param name="context">The serialization context.</param>
-        protected InitializationFailureException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

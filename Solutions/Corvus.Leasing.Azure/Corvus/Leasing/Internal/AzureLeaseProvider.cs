@@ -61,10 +61,7 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public async Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string? proposedLeaseId = null)
         {
-            if (leasePolicy is null)
-            {
-                throw new ArgumentNullException(nameof(leasePolicy));
-            }
+            ArgumentNullException.ThrowIfNull(leasePolicy);
 
             this.logger.LogDebug($"Acquiring lease for '{leasePolicy.ActorName}' with name '{leasePolicy.Name}', duration '{leasePolicy.Duration}', and proposed id '{proposedLeaseId}'");
 
@@ -153,10 +150,7 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public async Task ExtendAsync(Lease lease)
         {
-            if (lease is null)
-            {
-                throw new ArgumentNullException(nameof(lease));
-            }
+            ArgumentNullException.ThrowIfNull(lease);
 
             this.logger.LogDebug($"Extending lease for '{lease.LeasePolicy.ActorName}' with name '{lease.LeasePolicy.Name}', duration '{lease.LeasePolicy.Duration}', and actual id '{lease.Id}'");
             await this.InitialiseAsync().ConfigureAwait(false);
@@ -169,10 +163,7 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public Lease FromLeaseToken(string leaseToken)
         {
-            if (leaseToken is null)
-            {
-                throw new ArgumentNullException(nameof(leaseToken));
-            }
+            ArgumentNullException.ThrowIfNull(leaseToken);
 
             return AzureLease.FromToken(this, leaseToken);
         }
@@ -180,10 +171,7 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public async Task ReleaseAsync(Lease lease)
         {
-            if (lease is null)
-            {
-                throw new ArgumentNullException(nameof(lease));
-            }
+            ArgumentNullException.ThrowIfNull(lease);
 
             if (lease is not AzureLease al)
             {

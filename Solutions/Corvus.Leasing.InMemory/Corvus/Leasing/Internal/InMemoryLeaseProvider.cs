@@ -24,14 +24,11 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string? proposedLeaseId = null)
         {
-            if (leasePolicy is null)
-            {
-                throw new ArgumentNullException(nameof(leasePolicy));
-            }
+            ArgumentNullException.ThrowIfNull(leasePolicy);
 
             proposedLeaseId ??= Guid.NewGuid().ToString();
 
-            Leases.TryGetValue(proposedLeaseId, out Lease lease);
+            Leases.TryGetValue(proposedLeaseId, out Lease? lease);
 
             if (lease?.Expires.HasValue == true && lease.Expires > DateTimeOffset.UtcNow)
             {
@@ -47,10 +44,7 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public Task ExtendAsync(Lease lease)
         {
-            if (lease is null)
-            {
-                throw new ArgumentNullException(nameof(lease));
-            }
+            ArgumentNullException.ThrowIfNull(lease);
 
             (lease as InMemoryLease)?.SetLastAcquired();
             return Task.CompletedTask;
@@ -59,10 +53,7 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public Lease FromLeaseToken(string leaseToken)
         {
-            if (leaseToken is null)
-            {
-                throw new ArgumentNullException(nameof(leaseToken));
-            }
+            ArgumentNullException.ThrowIfNull(leaseToken);
 
             return InMemoryLease.FromToken(this, leaseToken);
         }
@@ -70,14 +61,11 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public Task ReleaseAsync(Lease lease)
         {
-            if (lease is null)
-            {
-                throw new ArgumentNullException(nameof(lease));
-            }
+            ArgumentNullException.ThrowIfNull(lease);
 
             if (lease.Id != null)
             {
-                Leases.TryRemove(lease.Id, out Lease _);
+                Leases.TryRemove(lease.Id, out Lease? _);
             }
 
             return Task.CompletedTask;
@@ -86,10 +74,7 @@ namespace Corvus.Leasing.Internal
         /// <inheritdoc/>
         public string ToLeaseToken(Lease lease)
         {
-            if (lease is null)
-            {
-                throw new ArgumentNullException(nameof(lease));
-            }
+            ArgumentNullException.ThrowIfNull(lease);
 
             if (lease is InMemoryLease iml)
             {

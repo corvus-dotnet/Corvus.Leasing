@@ -25,18 +25,6 @@ namespace Corvus.Leasing.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LeaseAcquisitionUnsuccessfulException"/> class.
-        /// </summary>
-        /// <param name="info">The serialization info.</param>
-        /// <param name="context">The serialization context.</param>
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
-        protected LeaseAcquisitionUnsuccessfulException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
-            : base(info, context)
-        {
-        }
-
-        /// <summary>
         /// Gets the lease policy used during the attempt to acquire the lease.
         /// </summary>
         public LeasePolicy LeasePolicy { get; }
