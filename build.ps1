@@ -135,7 +135,7 @@ $SkipAnalysis = $false
 #
 # Build process configuration
 #
-$SolutionToBuild = (Resolve-Path (Join-Path $here ".\Solutions\Corvus.JsonSchema.sln")).Path
+$SolutionToBuild = (Resolve-Path (Join-Path $here ".\Solutions\Corvus.Leasing.sln")).Path
 $ProjectsToPublish = @(
     # "Solutions/MySolution/MyWebSite/MyWebSite.csproj"
 )
