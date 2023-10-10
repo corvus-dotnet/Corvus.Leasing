@@ -52,6 +52,36 @@ namespace Corvus.Leasing.Internal
         /// <remarks>This is currently 59 seconds.</remarks>
         private static TimeSpan InternalDefaultLeaseDuration => TimeSpan.FromSeconds(59);
 
+        /// <summary>
+        /// Gets the required container properties based on the desired container ID.
+        /// </summary>
+        /// <param name="containerId">The container ID.</param>
+        /// <param name="useRootPartitionKey">A boolean which indicates whether to use a root partition key.</param>
+        /// <returns>The container properties for a lease container.</returns>
+        public static ContainerProperties GetContainerProperties(string containerId, bool useRootPartitionKey)
+        {
+            if (useRootPartitionKey)
+            {
+#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
+                return new ContainerProperties
+                {
+                    Id = containerId,
+                    PartitionKeyPaths = ["/rpk", "/id"],
+                    DefaultTimeToLive = -1, // Explicit default time to live
+                };
+#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
+            }
+            else
+            {
+                return new ContainerProperties
+                {
+                    Id = containerId,
+                    PartitionKeyPath = "/id",
+                    DefaultTimeToLive = -1, // Explicit default time to live
+                };
+            }
+        }
+
         /// <inheritdoc/>
         public async Task<Lease> AcquireAsync(LeasePolicy leasePolicy, string? proposedLeaseId = null)
         {

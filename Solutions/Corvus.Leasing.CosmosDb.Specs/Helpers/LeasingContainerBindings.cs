@@ -14,7 +14,6 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
     using Corvus.Testing.SpecFlow;
     using Microsoft.Azure.Cosmos;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
     using TechTalk.SpecFlow;
 
@@ -50,7 +49,7 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
                     }
 
                     serviceCollection.AddSingleton(
-                        s => BuildLeaseProvider(s, featureContext));
+                        s => BuildLeaseProvider(featureContext));
                 });
         }
 
@@ -93,7 +92,7 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
                 () => ContainerBindings.GetServiceProvider(featureContext).GetRequiredService<ITestNameProvider>().CompleteTestSession());
         }
 
-        private static ILeaseProvider BuildLeaseProvider(IServiceProvider s, FeatureContext featureContext)
+        private static ILeaseProvider BuildLeaseProvider(FeatureContext featureContext)
         {
             Container leaseContainer = featureContext.Get<Container>(LeaseContainerKey);
             if (featureContext.FeatureInfo.Tags.Any(t => t == UserHierarchicalPKTag))
@@ -106,28 +105,10 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
             }
         }
 
-#pragma warning disable SA1010 // Opening square brackets should be spaced correctly - Collection Initializaters not yet supported by StyleCop
         private static ContainerProperties GetContainerProperties(FeatureContext featureContext)
         {
-            if (featureContext.FeatureInfo.Tags.Any(t => t == UserHierarchicalPKTag))
-            {
-                return new ContainerProperties
-                {
-                    Id = $"leasecontainer_{Guid.NewGuid()}",
-                    PartitionKeyPaths = ["/rpk", "/id"],
-                    DefaultTimeToLive = -1, // Explicit default time to live
-                };
-            }
-            else
-            {
-                return new ContainerProperties
-                {
-                    Id = $"leasecontainer_{Guid.NewGuid()}",
-                    PartitionKeyPath = "/id",
-                    DefaultTimeToLive = -1, // Explicit default time to live
-                };
-            }
+            bool useRootPartitionKey = featureContext.FeatureInfo.Tags.Any(t => t == UserHierarchicalPKTag);
+            return CosmosDbLeaseProvider.GetContainerProperties($"leasecontainer_{Guid.NewGuid()}", useRootPartitionKey);
         }
-#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
     }
 }
