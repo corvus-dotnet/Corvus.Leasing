@@ -15,11 +15,6 @@ resources:
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: corvus-dotnet-github
 
-variables:
-  Endjin_CosmosDbAccountUri: https://endjintestsql.documents.azure.com/
-  Endjin_CosmosDbKeySecretName: endjintestsql
-  Endjin_KeyVaultName: endjintest
-
 jobs:
 - template: templates/build.and.release.scripted.yml@recommended_practices
   parameters:
@@ -29,10 +24,16 @@ jobs:
     solution_to_build: $(Endjin_Solution_To_Build)
     postCustomEnvironmentVariables:
       - powershell: |
-          Write-Host "##vso[task.setvariable variable=StorageAccountConnectionString]$Env:ENDJIN_AZURESTORAGECONNECTIONSTRING"
-        displayName: 'Set Azure Connection String Environment Variable'
+          Write-Host "##vso[task.setvariable variable=CosmosDbAccountUri]$Env:ENDJIN_COSMOSDBACCOUNTURI"
+          Write-Host "##vso[task.setvariable variable=CosmosDbKeySecretName]$Env:ENDJIN_COSMOSDBKEYSECRETNAME"
+          Write-Host "##vso[task.setvariable variable=KeyVaultName]$Env:ENDJIN_KEYVAULTNAME"
+          Write-Host "##vso[task.setvariable variable=AzureServicesAuthConnectionString]$Env:ENDJIN_AZURESERVICESAUTHCONNECTIONSTRING"
+        displayName: 'Set Custom Environment Variables'
         env:
-          ENDJIN_AZURESTORAGECONNECTIONSTRING: $(Endjin_AzureStorageConnectionString)
+          ENDJIN_COSMOSDBACCOUNTURI: $(Endjin_CosmosDbAccountUri)
+          ENDJIN_COSMOSDBKEYSECRETNAME: $(Endjin_CosmosDbKeySecretName)
+          ENDJIN_KEYVAULTNAME: $(Endjin_KeyVaultName)
+          ENDJIN_AZURESERVICESAUTHCONNECTIONSTRING: $(Endjin_AzureServicesAuthConnectionString)
     additionalNetSdkVersions:
     - '8.x'
     includeNetSdkPreviewVersions: 'true'
