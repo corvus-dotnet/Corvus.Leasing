@@ -1,5 +1,8 @@
 ﻿@perFeatureContainer
 @ReleaseLeases
+@setupCosmosDBKeys
+@withSharedDatabase
+
 Feature: Lease
 	In order to allow an actor in the system to perform an exclusive operation 
 	As an actor in the system
@@ -12,12 +15,6 @@ Scenario: Acquire a lease with valid policy
 	Then the lease should expire in the future
 	Then it should retain the lease for 15 seconds
 	And the lease should be expired after 15 seconds
-
-Scenario: Acquire a lease with invalid duration
-	Given I am the only actor trying to perform an operation called "long-running-task"
-	And I want to acquire a lease for 1 seconds
-	When I acquire the lease
-	Then it should throw a InvalidOperationException
 
 Scenario: A single actor reacquires a lease that it already has acquired
 	Given I am the only actor trying to perform an operation called "long-running-task"

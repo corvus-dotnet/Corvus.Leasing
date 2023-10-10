@@ -20,6 +20,12 @@ namespace Corvus.Leasing.Internal
     /// </summary>
     public class CosmosDbLeaseProvider : ILeaseProvider
     {
+        /// <summary>
+        /// Gets the internal name of the root partition key path, if
+        /// a root partition is in use.
+        /// </summary>
+        public const string RootPartitionKeyPath = "/rpk";
+
         private readonly Container container;
         private readonly CosmosDbLeaseProviderOptions options;
         private readonly ILogger<ILeaseProvider> logger;
@@ -61,14 +67,33 @@ namespace Corvus.Leasing.Internal
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                string leaseEntity =
-                    $$"""
-                    {
-                        "id": "{{leaseObjectId}}",
-                        "leaseId": "{{leaseId}}",
-                        "ttl": {{GetLeaseDuration(leasePolicy)}},
-                        "acquisitionToken": 0
-                    """;
+                string leaseEntity;
+
+                if (this.options.RootPartitionKeyValue is string rpk)
+                {
+                    leaseEntity =
+                        $$"""
+                        {
+                            "rpk": "{{rpk}}",
+                            "id": "{{leaseObjectId}}",
+                            "leaseId": "{{leaseId}}",
+                            "ttl": {{GetLeaseDuration(leasePolicy)}},
+                            "acquisitionToken": 0
+                        }
+                        """;
+                }
+                else
+                {
+                    leaseEntity =
+                        $$"""
+                        {
+                            "id": "{{leaseObjectId}}",
+                            "leaseId": "{{leaseId}}",
+                            "ttl": {{GetLeaseDuration(leasePolicy)}},
+                            "acquisitionToken": 0
+                        }
+                        """;
+                }
 
                 // The lease does not exist, so we can create it, and assign it to ourselves
                 using Stream stream = new MemoryStream();
@@ -78,7 +103,7 @@ namespace Corvus.Leasing.Internal
                 stream.Position = 0;
                 response = await this.container.CreateItemStreamAsync(stream, pk).ConfigureAwait(false);
 
-                if (response.StatusCode != HttpStatusCode.Conflict)
+                if (response.StatusCode == HttpStatusCode.Conflict)
                 {
                     // In this case, someone sneakily got in there before us!
                     this.logger.LogError($"Failed to acquire lease for '{leasePolicy.ActorName}'. The lease was held by another party. The lease name was '{leasePolicy.Name}', duration '{leasePolicy.Duration}', and lease id '{leaseId}'");
@@ -100,7 +125,7 @@ namespace Corvus.Leasing.Internal
                 throw new LeaseAcquisitionUnsuccessfulException(leasePolicy, null);
             }
 
-            var lease = new CosmosDbLease(this, leasePolicy, leaseObjectId);
+            var lease = new CosmosDbLease(this, leasePolicy, leaseId);
             lease.SetLastAcquired(DateTimeOffset.Now);
             this.logger.LogDebug($"Acquired lease for '{leasePolicy.ActorName}' with name '{leasePolicy.Name}', duration '{leasePolicy.Duration}', and actual id '{leaseId}'");
             return lease;

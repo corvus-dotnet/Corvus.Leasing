@@ -4,21 +4,30 @@
 
 namespace Corvus.Leasing.CosmosDb.Specs.Helpers
 {
-    using System.Collections.Generic;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Corvus.Configuration;
+    using Corvus.Leasing.Internal;
+    using Corvus.Testing.CosmosDb.Extensions;
+    using Corvus.Testing.CosmosDb.SpecFlow;
     using Corvus.Testing.SpecFlow;
-
-    using Microsoft.Extensions.Configuration;
+    using Microsoft.Azure.Cosmos;
     using Microsoft.Extensions.DependencyInjection;
-
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
     using TechTalk.SpecFlow;
 
     /// <summary>
-    /// Provides Specflow bindings for Corvus.Leasing.CosmosDb.
+    /// Provides SpecFlow bindings for Corvus.Leasing.CosmosDb.
     /// </summary>
     [Binding]
     public static class LeasingContainerBindings
     {
+        public const string RootPkValue = "608aa751-e90f-4b8b-9be7-64fadc86de49"; // An imaginary tenant ID
+        public const string LeaseContainerKey = "CosmosDbLeaseContainer";
+        private const string UserHierarchicalPKTag = "useHierarchicalPK";
+
         /// <summary>
         /// Setup the endjin container for a feature.
         /// </summary>
@@ -31,26 +40,34 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
                 featureContext,
                 serviceCollection =>
                 {
-                    var fallbackSettings = new Dictionary<string, string>
-                        {
-                            { "COSMOSDBCONNECTIONSTRING", "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==" },
-                        };
-
-                    var configurationBuilder = new ConfigurationBuilder();
-                    configurationBuilder.AddConfigurationForTest(null, fallbackSettings);
-                    IConfigurationRoot config = configurationBuilder.Build();
-                    serviceCollection.AddSingleton(config);
-
-                    var options = new CosmosDbLeaseProviderOptions
+                    if (featureContext.FeatureInfo.Tags.Any(t => t == UserHierarchicalPKTag))
                     {
-                        RootPartitionKeyValue = null,
-                        CosmosDbConnectionString = config["COSMOSDBCONNECTIONSTRING"],
-                    };
+                        serviceCollection.AddSharedThroughputCosmosDbTestServices($"{CosmosDbLeaseProvider.RootPartitionKeyPath};/id");
+                    }
+                    else
+                    {
+                        serviceCollection.AddSharedThroughputCosmosDbTestServices("/id");
+                    }
 
-                    serviceCollection.AddTestNameProvider();
-                    //// TODO: Figure out how we're going to register this
-                    //// serviceCollection.AddCosmosDbLeasing(options);
+                    serviceCollection.AddSingleton(
+                        s => BuildLeaseProvider(s, featureContext));
                 });
+        }
+
+        /// <summary>
+        /// Setup the lease container and add it to the feature context as <see cref="LeaseContainerKey"/>.
+        /// </summary>
+        /// <param name="featureContext">The SpecFlow test context.</param>
+        /// <returns>A <see cref="Task"/> which completes when the lease container is configured.</returns>
+        [BeforeFeature("@perFeatureContainer", Order = CosmosDbBeforeFeatureOrder.CreateContainer)]
+        public static async Task SetupLeaseContainer(FeatureContext featureContext)
+        {
+            Database db = featureContext.Get<Database>(CosmosDbContextKeys.CosmosDbDatabase);
+
+            Container leaseContainer = await db.CreateContainerIfNotExistsAsync(
+                               GetContainerProperties(featureContext)).ConfigureAwait(false);
+            CosmosDbContextBindings.AddFeatureLevelCosmosDbContainerForCleanup(featureContext, leaseContainer);
+            featureContext.Set(leaseContainer, LeaseContainerKey);
         }
 
         /// <summary>
@@ -75,5 +92,42 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
             featureContext.RunAndStoreExceptions(
                 () => ContainerBindings.GetServiceProvider(featureContext).GetRequiredService<ITestNameProvider>().CompleteTestSession());
         }
+
+        private static ILeaseProvider BuildLeaseProvider(IServiceProvider s, FeatureContext featureContext)
+        {
+            Container leaseContainer = featureContext.Get<Container>(LeaseContainerKey);
+            if (featureContext.FeatureInfo.Tags.Any(t => t == UserHierarchicalPKTag))
+            {
+                return new CosmosDbLeaseProvider(leaseContainer, new CosmosDbLeaseProviderOptions { RootPartitionKeyValue = RootPkValue }, NullLogger<ILeaseProvider>.Instance);
+            }
+            else
+            {
+                return new CosmosDbLeaseProvider(leaseContainer, new CosmosDbLeaseProviderOptions { RootPartitionKeyValue = null }, NullLogger<ILeaseProvider>.Instance);
+            }
+        }
+
+#pragma warning disable SA1010 // Opening square brackets should be spaced correctly - Collection Initializaters not yet supported by StyleCop
+        private static ContainerProperties GetContainerProperties(FeatureContext featureContext)
+        {
+            if (featureContext.FeatureInfo.Tags.Any(t => t == UserHierarchicalPKTag))
+            {
+                return new ContainerProperties
+                {
+                    Id = $"leasecontainer_{Guid.NewGuid()}",
+                    PartitionKeyPaths = ["/rpk", "/id"],
+                    DefaultTimeToLive = -1, // Explicit default time to live
+                };
+            }
+            else
+            {
+                return new ContainerProperties
+                {
+                    Id = $"leasecontainer_{Guid.NewGuid()}",
+                    PartitionKeyPath = "/id",
+                    DefaultTimeToLive = -1, // Explicit default time to live
+                };
+            }
+        }
+#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
     }
 }

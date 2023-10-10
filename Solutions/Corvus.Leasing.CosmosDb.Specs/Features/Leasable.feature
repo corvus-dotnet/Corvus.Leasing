@@ -1,4 +1,6 @@
 ﻿@perFeatureContainer
+@setupCosmosDBKeys
+@withSharedDatabase
 
 Feature: Leasable
 	In order to avoid concurrency issues
@@ -105,9 +107,9 @@ Scenario: A single actor executes a long running task using a multi-leasable wit
 	Given the long running task takes 0.5 seconds to complete
 	And the lease names are
 	| Name     |
-	| "lease1" |
-	| "lease2" |
-	| "lease3" |
+	| lease1 |
+	| lease2 |
+	| lease3 |
 	When I execute the task using all the leases
 	Then 1 action(s) should have completed successfully
 
@@ -116,9 +118,9 @@ Scenario: A single actor executes a long running task with duration longer than 
 	And the lease duration is 15 seconds
 	And the lease names are
 	| Name     |
-	| "lease1" |
-	| "lease2" |
-	| "lease3" |
+	| lease1 |
+	| lease2 |
+	| lease3 |
 	When I execute the task using all the leases
 	Then 1 action(s) should have completed successfully
 #	
