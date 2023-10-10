@@ -15,6 +15,11 @@ resources:
       name: endjin/Endjin.RecommendedPractices.AzureDevopsPipelines.GitHub
       endpoint: corvus-dotnet-github
 
+variables:
+  Endjin_CosmosDbAccountUri: https://endjintestsql.documents.azure.com/
+  Endjin_CosmosDbKeySecretName: endjintestsql
+  Endjin_KeyVaultName: endjintest
+
 jobs:
 - template: templates/build.and.release.scripted.yml@recommended_practices
   parameters:
