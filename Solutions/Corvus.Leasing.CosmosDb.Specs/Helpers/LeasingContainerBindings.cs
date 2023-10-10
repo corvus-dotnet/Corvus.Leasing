@@ -8,6 +8,7 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
     using System.Linq;
     using System.Threading.Tasks;
     using Corvus.Configuration;
+    using Corvus.Identity.ClientAuthentication.Azure;
     using Corvus.Leasing.Internal;
     using Corvus.Testing.CosmosDb.Extensions;
     using Corvus.Testing.CosmosDb.SpecFlow;
@@ -16,6 +17,7 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging.Abstractions;
     using TechTalk.SpecFlow;
+    using TechTalk.SpecFlow.Assist;
 
     /// <summary>
     /// Provides SpecFlow bindings for Corvus.Leasing.CosmosDb.
@@ -36,21 +38,21 @@ namespace Corvus.Leasing.CosmosDb.Specs.Helpers
         public static void SetupFeature(FeatureContext featureContext)
         {
             ContainerBindings.ConfigureServices(
-                featureContext,
-                serviceCollection =>
+            featureContext,
+            serviceCollection =>
+            {
+                if (featureContext.FeatureInfo.Tags.Any(t => t == UserHierarchicalPKTag))
                 {
-                    if (featureContext.FeatureInfo.Tags.Any(t => t == UserHierarchicalPKTag))
-                    {
-                        serviceCollection.AddSharedThroughputCosmosDbTestServices($"{CosmosDbLeaseProvider.RootPartitionKeyPath};/id");
-                    }
-                    else
-                    {
-                        serviceCollection.AddSharedThroughputCosmosDbTestServices("/id");
-                    }
+                    serviceCollection.AddSharedThroughputCosmosDbTestServices($"{CosmosDbLeaseProvider.RootPartitionKeyPath};/id");
+                }
+                else
+                {
+                    serviceCollection.AddSharedThroughputCosmosDbTestServices("/id");
+                }
 
-                    serviceCollection.AddSingleton(
-                        s => BuildLeaseProvider(featureContext));
-                });
+                serviceCollection.AddSingleton(
+                    _ => BuildLeaseProvider(featureContext));
+            });
         }
 
         /// <summary>

@@ -25,8 +25,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.35.4" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0-rc.1.23419.4" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0-rc.1.23419.4" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0-rc.2.23479.6" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0-rc.2.23479.6" />
 	</ItemGroup>
 
 	<ItemGroup>
