@@ -9,7 +9,6 @@ namespace Microsoft.Extensions.DependencyInjection
     using Corvus.Configuration;
     using Corvus.Leasing;
     using Corvus.Leasing.Internal;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
     /// <summary>

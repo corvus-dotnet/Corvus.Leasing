@@ -5,8 +5,8 @@
 namespace Corvus.Leasing.Internal
 {
     using System;
+    using Azure;
     using Corvus.Retry.Policies;
-    using Microsoft.WindowsAzure.Storage;
 
     /// <summary>
     /// Retry policy that will retry unless a HTTP 409 Conflict status code is detected.
@@ -21,7 +21,7 @@ namespace Corvus.Leasing.Internal
         /// <returns>Whether a retry attempt should be made.</returns>
         public bool CanRetry(Exception exception)
         {
-            return exception is not StorageException storageException || storageException.RequestInformation.HttpStatusCode != 409;
+            return exception is not RequestFailedException storageException || storageException.Status != 409;
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿@perFeatureContainer
 @ReleaseLeases
+@setupCosmosDBKeys
+@withSharedDatabase
+
 Feature: Lease
 	In order to allow an actor in the system to perform an exclusive operation 
 	As an actor in the system
@@ -12,20 +15,6 @@ Scenario: Acquire a lease with valid policy
 	Then the lease should expire in the future
 	Then it should retain the lease for 15 seconds
 	And the lease should be expired after 15 seconds
-
-Scenario: Acquire a lease with invalid duration
-	Given I am the only actor trying to perform an operation called "long-running-task"
-	And I want to acquire a lease for 1 seconds
-	When I acquire the lease
-	Then it should throw a InvalidOperationException
-
-# AZURITE: supports arbitrary blob names, so this test is not valid
-#Scenario: Acquire a lease with invalid name
-#	Given I am the only actor trying to perform an operation called "long-running-task."
-#	And I want to acquire a lease for 15 seconds
-#	And the lease name in the policy is mtvgzvjqwcmhpfdolpgypjjnmrzbvvpdviprpspehbczbnabjbgrhmagbmonfgdoewivguznqsajdldsajonewkgirosqbaatvfvzuuzcnpjdtzoarnmonrnxtpnsjqkjsvdppkianmvmvxxnfmieyuflhtvoqrsxlnfaduqaeykfysawaawrzmwbalfmrsrhmgzompyjgwkpiruarzpfqqcdcojrnfrgckbfuwlixplvvxsmuijzznznvxijkthyjdilkendslwkyeuayxisfuuymjfrsrbndvrkljfkspoqjvnqgfounnkmxamcktettkrcunnrbmaztdonmioqkystvrwsrflypwvrdhqystuyedvwkidcagtboqtipufkchvjgcfwzugsyamiurwnryhqqeprfwzngrxctpbrlagulgmsnnbduvssrfnkrmpvmiqffajbibmkdynmqonxetwnnjiqmugpnudltuyorjnqnvsgkacrvfdudtfpopszpabonqcdedfstgtrsaiifxsqhqntjxnuazhxjqbkpnciytlzdtjneehlhbysfmcsctbzglouywdgjdqqubffvtqdoucbjventpnvtvfuqilyzszmexpsaemjdqffmcblebxeiyehtbdcrhdxpuknqerqhxlpcmvdkqiyagpvgsbzvdlwammslygcptzwhekcnmzvszfvyjkmegrhhncxsgxvvlzobgkxqvpmgjnhpslgmjmiyfvmmhedbpeifcwahbjthykxvmzgsyaktjvqcbirqfbpmtbtdblkfexnqvhpirpuzvzkczzuhfltvyygobgqsxahgpxqidmekfpsnnenuvtvqlsszoalapafjqwbwvmohnfljyssffqtyxfcycxzddvmphkghngxwetlmocnmccxeeejkphfxuqyqrrgpvmqpeiipthvoybghylyceandltexenhnmfuikoobbrqcwwvpjrnavoukdobvprhdfyitshatafjtjzswmiuasjdhgfhsdgadghfakjsdghfajkdfghaskjdhfgaskjdhfgaskjdfhgaksjdfghadkjhfg
-#	When I acquire the lease
-#	Then it should throw a InvalidOperationException
 
 Scenario: A single actor reacquires a lease that it already has acquired
 	Given I am the only actor trying to perform an operation called "long-running-task"
@@ -108,30 +97,30 @@ Given I am the only actor trying to perform an operation called "long-running-ta
 	And the lease expiration date should be null
 	And the lease last acquired date should be null
 
-Scenario: Detokenize a lease using the wrong lease provider (azure to in-memory)
+Scenario: Detokenize a lease using the wrong lease provider (cosmos to in-memory)
 	Given I am the only actor trying to perform an operation called "long-running-task"
 	And I want to acquire a lease for 15 seconds
-	And I create a token for a lease with an AzureLeaseProvider
+	And I create a token for a lease with a CosmosDbLeaseProvider
 	When I ask an InMemoryLeaseProvider to detokenize the token
 	Then it should throw a TokenizationException
 
-Scenario: Tokenize a lease using the wrong lease provider (azure to in-memory)
+Scenario: Tokenize a lease using the wrong lease provider (cosmos to in-memory)
 	Given I am the only actor trying to perform an operation called "long-running-task"
 	And I want to acquire a lease for 15 seconds
-	And I create a lease with an AzureLeaseProvider
+	And I create a lease with a CosmosDbLeaseProvider
 	When I ask an InMemoryLeaseProvider to tokenize the token
 	Then it should throw a TokenizationException
 
-Scenario: Detokenize a lease using the wrong lease provider (in-memory to azure)
+Scenario: Detokenize a lease using the wrong lease provider (in-memory to cosmos)
 	Given I am the only actor trying to perform an operation called "long-running-task"
 	And I want to acquire a lease for 15 seconds
 	And I create a token for a lease with an InMemoryLeaseProvider
-	When I ask an AzureLeaseProvider to detokenize the token
+	When I ask a CosmosDbLeaseProvider to detokenize the token
 	Then it should throw a TokenizationException
 
-Scenario: Tokenize a lease using the wrong lease provider (in-memory to azure)
+Scenario: Tokenize a lease using the wrong lease provider (in-memory to cosmos)
 	Given I am the only actor trying to perform an operation called "long-running-task"
 	And I want to acquire a lease for 15 seconds
 	And I create a lease with an InMemoryLeaseProvider
-	When I ask an AzureLeaseProvider to tokenize the token
+	When I ask a CosmosDbLeaseProvider to tokenize the token
 	Then it should throw a TokenizationException

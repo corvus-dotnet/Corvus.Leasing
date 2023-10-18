@@ -32,10 +32,7 @@ namespace Corvus.Leasing
         /// </remarks>
         public static async Task<bool> DoNotThrowIfLeaseNotAcquired(this Task leaseTask)
         {
-            if (leaseTask is null)
-            {
-                throw new ArgumentNullException(nameof(leaseTask));
-            }
+            ArgumentNullException.ThrowIfNull(leaseTask);
 
             try
             {
@@ -65,10 +62,7 @@ namespace Corvus.Leasing
         /// </remarks>
         public static async Task<(bool Success, T Result)> DoNotThrowIfLeaseNotAcquired<T>(this Task<T> leaseTask)
         {
-            if (leaseTask is null)
-            {
-                throw new ArgumentNullException(nameof(leaseTask));
-            }
+            ArgumentNullException.ThrowIfNull(leaseTask);
 
             try
             {
@@ -103,15 +97,9 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
@@ -145,20 +133,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
@@ -184,15 +163,9 @@ namespace Corvus.Leasing
             IRetryPolicy retryPolicy,
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
             return ExecuteWithMutexAsync(leaseProvider, action, leasePolicy?.Name, retryStrategy, retryPolicy, leasePolicy?.Duration, leasePolicy?.ActorName, proposedLeaseId);
         }
@@ -215,15 +188,9 @@ namespace Corvus.Leasing
             IRetryPolicy retryPolicy,
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
             return ExecuteWithMutexAsync(leaseProvider, action, leasePolicy?.Name, retryStrategy, retryPolicy, leasePolicy?.Duration, leasePolicy?.ActorName, proposedLeaseId);
         }
@@ -246,15 +213,9 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
@@ -280,20 +241,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
@@ -319,15 +271,9 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
@@ -353,20 +299,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
@@ -392,15 +329,9 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
@@ -426,15 +357,9 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
@@ -462,20 +387,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
@@ -502,20 +418,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
@@ -542,20 +449,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
@@ -582,20 +480,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
@@ -622,20 +511,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
@@ -662,20 +542,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
@@ -702,20 +573,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
@@ -742,20 +604,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
@@ -782,20 +635,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
 
@@ -822,20 +666,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
 
@@ -862,20 +697,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
 
@@ -902,20 +728,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
 
@@ -944,25 +761,13 @@ namespace Corvus.Leasing
             string? actorName = null,
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             var cts = new CancellationTokenSource();
 
@@ -1023,30 +828,15 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             var cts = new CancellationTokenSource();
 
@@ -1107,25 +897,13 @@ namespace Corvus.Leasing
             string? actorName = null,
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             var cts = new CancellationTokenSource();
 
@@ -1186,30 +964,15 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             var cts = new CancellationTokenSource();
 
@@ -1267,15 +1030,9 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
@@ -1302,20 +1059,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
@@ -1342,15 +1090,9 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
@@ -1377,20 +1119,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
@@ -1419,20 +1152,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
@@ -1460,25 +1184,13 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
@@ -1506,20 +1218,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
@@ -1547,25 +1250,13 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
@@ -1593,20 +1284,11 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
 
@@ -1634,25 +1316,13 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new DoNotRetryOnLeaseAcquisitionUnsuccessfulPolicy();
 
@@ -1682,25 +1352,13 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             var cts = new CancellationTokenSource();
 
@@ -1756,30 +1414,15 @@ namespace Corvus.Leasing
             string actorName = "",
             string? proposedLeaseId = null)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (action is null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
+            ArgumentNullException.ThrowIfNull(action);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             var cts = new CancellationTokenSource();
 
@@ -1822,299 +1465,251 @@ namespace Corvus.Leasing
         /// Acquire an auto renewing lease from the lease provider.
         /// </summary>
         /// <param name="leaseProvider">The lease provider.</param>
-        /// <param name="token">The cancellation token.</param>
         /// <param name="leaseName">The name of the lease. This is the shared key across lease acquisitions.</param>
         /// <param name="duration">The duration for which the lease should be acquired before being automatically renewed.</param>
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>A task whose result is an instance of the lease that was acquired.</returns>
         public static Task<Lease> AcquireAutorenewingLeaseAsync(
             this ILeaseProvider leaseProvider,
-            CancellationToken token,
             string leaseName,
             TimeSpan? duration = null,
             string actorName = "",
-            string? proposedLeaseId = null)
+            string? proposedLeaseId = null,
+            CancellationToken token = default)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
             return AcquireAutorenewingLeaseAsync(
                 leaseProvider,
-                token,
                 leaseName,
                 retryStrategy,
                 retryPolicy,
                 duration,
                 actorName,
-                proposedLeaseId);
+                proposedLeaseId,
+                token);
         }
 
         /// <summary>
         /// Acquire an auto renewing lease from the lease provider.
         /// </summary>
         /// <param name="leaseProvider">The lease provider.</param>
-        /// <param name="token">The cancellation token.</param>
         /// <param name="leaseNames">The names of the leases. The name is the shared key across lease acquisitions.</param>
         /// <param name="duration">The duration for which the lease should be acquired before being automatically renewed.</param>
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>A task whose result is an instance of the lease set that was acquired.</returns>
         public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(
             this ILeaseProvider leaseProvider,
-            CancellationToken token,
             IEnumerable<string> leaseNames,
             TimeSpan? duration = null,
             string actorName = "",
-            string? proposedLeaseId = null)
+            string? proposedLeaseId = null,
+            CancellationToken token = default)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
             return AcquireAutorenewingLeaseAsync(
                 leaseProvider,
-                token,
                 leaseNames,
                 retryStrategy,
                 retryPolicy,
                 duration,
                 actorName,
-                proposedLeaseId);
+                proposedLeaseId,
+                token);
         }
 
         /// <summary>
         /// Acquire an auto renewing lease from the lease provider.
         /// </summary>
         /// <param name="leaseProvider">The lease provider.</param>
-        /// <param name="token">The cancellation token.</param>
         /// <param name="leaseName">The name of the lease. This is the shared key across lease acquisitions.</param>
         /// <param name="retryPolicy">The retry policy for the task.</param>
         /// <param name="duration">The duration for which the lease should be acquired before being automatically renewed.</param>
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>A task whose result is an instance of the lease that was acquired.</returns>
         public static Task<Lease> AcquireAutorenewingLeaseAsync(
             this ILeaseProvider leaseProvider,
-            CancellationToken token,
             string leaseName,
             IRetryPolicy retryPolicy,
             TimeSpan? duration = null,
             string actorName = "",
-            string? proposedLeaseId = null)
+            string? proposedLeaseId = null,
+            CancellationToken token = default)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
             return AcquireAutorenewingLeaseAsync(
                 leaseProvider,
-                token,
                 leaseName,
                 retryStrategy,
                 retryPolicy,
                 duration,
                 actorName,
-                proposedLeaseId);
+                proposedLeaseId,
+                token);
         }
 
         /// <summary>
         /// Acquire an auto renewing lease from the lease provider.
         /// </summary>
         /// <param name="leaseProvider">The lease provider.</param>
-        /// <param name="token">The cancellation token.</param>
         /// <param name="leaseNames">The names of the leases. The name is the shared key across lease acquisitions.</param>
         /// <param name="retryPolicy">The retry policy for the task.</param>
         /// <param name="duration">The duration for which the lease should be acquired before being automatically renewed.</param>
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>A task whose result is an instance of the lease set that was acquired.</returns>
         public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(
             this ILeaseProvider leaseProvider,
-            CancellationToken token,
             IEnumerable<string> leaseNames,
             IRetryPolicy retryPolicy,
             TimeSpan? duration = null,
             string actorName = "",
-            string? proposedLeaseId = null)
+            string? proposedLeaseId = null,
+            CancellationToken token = default)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             IRetryStrategy retryStrategy = GetDefaultRetryStrategy(leaseProvider, duration);
 
             return AcquireAutorenewingLeaseAsync(
                 leaseProvider,
-                token,
                 leaseNames,
                 retryStrategy,
                 retryPolicy,
                 duration,
                 actorName,
-                proposedLeaseId);
+                proposedLeaseId,
+                token);
         }
 
         /// <summary>
         /// Acquire an auto renewing lease from the lease provider.
         /// </summary>
         /// <param name="leaseProvider">The lease provider.</param>
-        /// <param name="token">The cancellation token.</param>
         /// <param name="leaseName">The name of the lease. This is the shared key across lease acquisitions.</param>
         /// <param name="retryStrategy">The retry strategy for the task.</param>
         /// <param name="duration">The duration for which the lease should be acquired before being automatically renewed.</param>
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>A task whose result is an instance of the lease that was acquired.</returns>
         public static Task<Lease> AcquireAutorenewingLeaseAsync(
             this ILeaseProvider leaseProvider,
-            CancellationToken token,
             string leaseName,
             IRetryStrategy retryStrategy,
             TimeSpan? duration = null,
             string actorName = "",
-            string? proposedLeaseId = null)
+            string? proposedLeaseId = null,
+            CancellationToken token = default)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
             return AcquireAutorenewingLeaseAsync(
                 leaseProvider,
-                token,
                 leaseName,
                 retryStrategy,
                 retryPolicy,
                 duration,
                 actorName,
-                proposedLeaseId);
+                proposedLeaseId,
+                token);
         }
 
         /// <summary>
         /// Acquire an auto renewing lease from the lease provider.
         /// </summary>
         /// <param name="leaseProvider">The lease provider.</param>
-        /// <param name="token">The cancellation token.</param>
         /// <param name="leaseNames">The names of the leases. The name is the shared key across lease acquisitions.</param>
         /// <param name="retryStrategy">The retry strategy for the task.</param>
         /// <param name="duration">The duration for which the lease should be acquired before being automatically renewed.</param>
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>A task whose result is an instance of the lease set that was acquired.</returns>
         public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(
             this ILeaseProvider leaseProvider,
-            CancellationToken token,
             IEnumerable<string> leaseNames,
             IRetryStrategy retryStrategy,
             TimeSpan? duration = null,
             string actorName = "",
-            string? proposedLeaseId = null)
+            string? proposedLeaseId = null,
+            CancellationToken token = default)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
             var retryPolicy = new RetryUntilLeaseAcquiredPolicy();
 
             return AcquireAutorenewingLeaseAsync(
                 leaseProvider,
-                token,
                 leaseNames,
                 retryStrategy,
                 retryPolicy,
                 duration,
                 actorName,
-                proposedLeaseId);
+                proposedLeaseId,
+                token);
         }
 
         /// <summary>
         /// Acquire an auto renewing lease from the lease provider.
         /// </summary>
         /// <param name="leaseProvider">The lease provider.</param>
-        /// <param name="token">The cancellation token.</param>
         /// <param name="leaseName">The name of the lease. This is the shared key across lease acquisitions.</param>
         /// <param name="retryStrategy">The retry strategy for the task.</param>
         /// <param name="retryPolicy">The retry policy for the task.</param>
         /// <param name="duration">The duration for which the lease should be acquired before being automatically renewed.</param>
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>A task whose result is an instance of the lease that was acquired.</returns>
         public static Task<Lease> AcquireAutorenewingLeaseAsync(
             this ILeaseProvider leaseProvider,
-            CancellationToken token,
             string leaseName,
             IRetryStrategy retryStrategy,
             IRetryPolicy retryPolicy,
             TimeSpan? duration = null,
             string actorName = "",
-            string? proposedLeaseId = null)
+            string? proposedLeaseId = null,
+            CancellationToken token = default)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             return Retriable.RetryAsync(
                 () => AcquireLeaseWithRenewalTask(leaseProvider, leaseName, actorName, duration, proposedLeaseId, token),
@@ -2127,43 +1722,31 @@ namespace Corvus.Leasing
         /// Acquire an auto renewing lease from the lease provider.
         /// </summary>
         /// <param name="leaseProvider">The lease provider.</param>
-        /// <param name="token">The cancellation token.</param>
         /// <param name="leaseNames">The names of the leases. The name is the shared key across lease acquisitions.</param>
         /// <param name="retryStrategy">The retry strategy for the task.</param>
         /// <param name="retryPolicy">The retry policy for the task.</param>
         /// <param name="duration">The duration for which the lease should be acquired before being automatically renewed.</param>
         /// <param name="actorName">The name of the actor acquiring the lease.</param>
         /// <param name="proposedLeaseId">The ID to use for the lease.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>A task whose result is an instance of the lease set that was acquired.</returns>
         public static Task<LeaseSet> AcquireAutorenewingLeaseAsync(
             this ILeaseProvider leaseProvider,
-            CancellationToken token,
             IEnumerable<string> leaseNames,
             IRetryStrategy retryStrategy,
             IRetryPolicy retryPolicy,
             TimeSpan? duration = null,
             string actorName = "",
-            string? proposedLeaseId = null)
+            string? proposedLeaseId = null,
+            CancellationToken token = default)
         {
-            if (leaseProvider is null)
-            {
-                throw new ArgumentNullException(nameof(leaseProvider));
-            }
+            ArgumentNullException.ThrowIfNull(leaseProvider);
 
-            if (leaseNames is null)
-            {
-                throw new ArgumentNullException(nameof(leaseNames));
-            }
+            ArgumentNullException.ThrowIfNull(leaseNames);
 
-            if (retryStrategy is null)
-            {
-                throw new ArgumentNullException(nameof(retryStrategy));
-            }
+            ArgumentNullException.ThrowIfNull(retryStrategy);
 
-            if (retryPolicy is null)
-            {
-                throw new ArgumentNullException(nameof(retryPolicy));
-            }
+            ArgumentNullException.ThrowIfNull(retryPolicy);
 
             return Retriable.RetryAsync(
                 () => AcquireLeaseWithRenewalTask(leaseProvider, leaseNames, actorName, duration, proposedLeaseId, token),
@@ -2172,7 +1755,7 @@ namespace Corvus.Leasing
                 retryPolicy);
         }
 
-        private static IRetryStrategy GetDefaultRetryStrategy(ILeaseProvider leaseProvider, TimeSpan? duration)
+        private static Linear GetDefaultRetryStrategy(ILeaseProvider leaseProvider, TimeSpan? duration)
         {
             TimeSpan calculatedDuration = duration ?? leaseProvider.DefaultLeaseDuration;
             return new Linear(TimeSpan.FromSeconds(Math.Max(1, Math.Round(calculatedDuration.TotalSeconds / 10))), int.MaxValue);
@@ -2188,14 +1771,18 @@ namespace Corvus.Leasing
         {
             TimeSpan calculatedDuration = duration ?? leaseProvider.DefaultLeaseDuration;
 
-            var leasePolicy = new LeasePolicy { ActorName = actorName, Duration = calculatedDuration };
-            leasePolicy.Name = leaseName;
+            var leasePolicy = new LeasePolicy
+            {
+                ActorName = actorName,
+                Duration = calculatedDuration,
+                Name = leaseName,
+            };
 
             Lease lease = await leaseProvider.AcquireAsync(
                                     leasePolicy,
                                     proposedLeaseId).ConfigureAwait(false);
 
-            StartRenewalBackgroundTask(token, lease, GetRenewalPeriod(lease.LeasePolicy, leaseProvider));
+            StartRenewalBackgroundTask(lease, GetRenewalPeriod(lease.LeasePolicy, leaseProvider), token);
 
             return lease;
         }
@@ -2216,19 +1803,22 @@ namespace Corvus.Leasing
                                         proposedLeaseId);
             });
 
-            var results = new Lease[0];
+#pragma warning disable IDE0301 // Simplify collection initialization
+            Lease[] results = Array.Empty<Lease>();
+#pragma warning restore IDE0301 // Simplify collection initialization
+
             try
             {
                 results = await Task.WhenAll(tasks).ConfigureAwait(false);
                 var leaseSet = new LeaseSet(results);
-                StartRenewalBackgroundTask(token, leaseSet, GetRenewalPeriod(results[0].LeasePolicy, leaseProvider));
+                StartRenewalBackgroundTask(leaseSet, GetRenewalPeriod(results[0].LeasePolicy, leaseProvider), token);
                 return leaseSet;
             }
             catch (Exception)
             {
                 try
                 {
-                    await results.ForEachFailEndAsync(r => r.ReleaseAsync()).ConfigureAwait(false);
+                    await results.ForEachFailEndAsync(r => r.ReleaseAsync(), cancellationToken: token).ConfigureAwait(false);
                 }
                 catch
                 {
@@ -2245,7 +1835,7 @@ namespace Corvus.Leasing
             return TimeSpan.FromSeconds(Math.Round(leaseDuration.TotalSeconds / 3));
         }
 
-        private static void StartRenewalBackgroundTask(CancellationToken cancellationToken, Lease lease, TimeSpan renewEvery)
+        private static void StartRenewalBackgroundTask(Lease lease, TimeSpan renewEvery, CancellationToken cancellationToken)
         {
             Task.Factory.StartNew(
                 () =>
@@ -2276,7 +1866,7 @@ namespace Corvus.Leasing
                 TaskScheduler.Default);
         }
 
-        private static void StartRenewalBackgroundTask(CancellationToken cancellationToken, LeaseSet leases, TimeSpan renewEvery)
+        private static void StartRenewalBackgroundTask(LeaseSet leases, TimeSpan renewEvery, CancellationToken cancellationToken)
         {
             // This task is terminated through the cancellation token when the lease is released
             Task.Factory.StartNew(

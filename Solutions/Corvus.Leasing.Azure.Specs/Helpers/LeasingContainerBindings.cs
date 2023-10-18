@@ -14,7 +14,7 @@ namespace Corvus.Leasing.Azure.Specs.Helpers
     using TechTalk.SpecFlow;
 
     /// <summary>
-    /// Provides Specflow bindings for Endjin Composition.
+    /// Provides Specflow bindings for Corvus.Leasing.CosmosDb.
     /// </summary>
     [Binding]
     public static class LeasingContainerBindings

@@ -1,4 +1,4 @@
-﻿// <copyright file="InMemoryLease.cs" company="Endjin Limited">
+﻿// <copyright file="CosmosDbLease.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
@@ -9,69 +9,55 @@ namespace Corvus.Leasing.Internal
     using Corvus.Extensions;
 
     /// <summary>
-    ///     A <see cref="Lease" /> implementation for in memory leases.
+    /// An implementation of a lease for Azure blob leasing.
     /// </summary>
-    public class InMemoryLease : Lease
+    public class CosmosDbLease : Lease
     {
         private const string NullString = "<no value>";
-        private const string LeaseTokenContentType = "application/vnd.endjin.inmemoryleaseprovider.leasetoken";
+        private const string LeaseTokenContentType = "application/vnd.endjin.cosmosdbleaseprovider.leasetoken";
+
         private DateTimeOffset? lastAcquired;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryLease"/> class.
+        /// Initializes a new instance of the <see cref="CosmosDbLease"/> class.
         /// </summary>
-        /// <param name="leaseProvider">
-        /// The lease provider.
-        /// </param>
-        /// <param name="leasePolicy">
-        /// The lease policy.
-        /// </param>
-        /// <param name="id">
-        /// The id.
-        /// </param>
-        public InMemoryLease(InMemoryLeaseProvider leaseProvider, LeasePolicy leasePolicy, string id)
+        /// <param name="leaseProvider">The lease provider.</param>
+        /// <param name="leasePolicy">The lease policy.</param>
+        /// <param name="id">The id for the lease.</param>
+        internal CosmosDbLease(CosmosDbLeaseProvider leaseProvider, LeasePolicy leasePolicy, string id)
             : base(leaseProvider, leasePolicy, id)
         {
-            this.SetLastAcquired();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryLease"/> class.
+        /// Initializes a new instance of the <see cref="CosmosDbLease"/> class.
         /// </summary>
-        /// <param name="leaseProvider">
-        /// The lease provider.
-        /// </param>
-        /// <param name="leasePolicy">
-        /// The lease policy.
-        /// </param>
-        /// <param name="id">
-        /// The id.
-        /// </param>
+        /// <param name="leaseProvider">The lease provider.</param>
+        /// <param name="leasePolicy">The lease policy.</param>
+        /// <param name="id">The id for the lease.</param>
         /// <param name="lastAcquired">The time at which the lease was last acquired.</param>
-        public InMemoryLease(InMemoryLeaseProvider leaseProvider, LeasePolicy leasePolicy, string id, DateTimeOffset? lastAcquired)
+        internal CosmosDbLease(CosmosDbLeaseProvider leaseProvider, LeasePolicy leasePolicy, string id, DateTimeOffset? lastAcquired)
             : base(leaseProvider, leasePolicy, id)
         {
             this.lastAcquired = lastAcquired;
         }
 
-        /// <inheritdoc />
-        public override DateTimeOffset? LastAcquired => this.lastAcquired;
-
-        /// <summary>
-        ///     Updates the <see cref="LastAcquired" /> date to the current date/time.
-        /// </summary>
-        public void SetLastAcquired()
+        /// <inheritdoc/>
+        public override DateTimeOffset? LastAcquired
         {
-            this.lastAcquired = DateTimeOffset.UtcNow;
+            get
+            {
+                return this.lastAcquired;
+            }
         }
 
         /// <summary>
-        /// Creates an <see cref="InMemoryLease"/> from a lease token.
+        /// Creates an <see cref="CosmosDbLease"/> from a lease token.
         /// </summary>
         /// <param name="leaseProvider">The lease provider.</param>
         /// <param name="token">The lease token from which to construct the lease.</param>
         /// <returns>An instance of an in-memory lease configured from the lease token.</returns>
-        internal static InMemoryLease FromToken(InMemoryLeaseProvider leaseProvider, string token)
+        internal static CosmosDbLease FromToken(CosmosDbLeaseProvider leaseProvider, string token)
         {
             ArgumentNullException.ThrowIfNull(leaseProvider);
 
@@ -93,7 +79,7 @@ namespace Corvus.Leasing.Internal
                 Duration = lines[4] != NullString ? (TimeSpan?)TimeSpan.FromMilliseconds(long.Parse(lines[4])) : null,
             };
 
-            return new InMemoryLease(leaseProvider, leasePolicy, id, lastAcquired);
+            return new CosmosDbLease(leaseProvider, leasePolicy, id, lastAcquired);
         }
 
         /// <summary>
@@ -110,6 +96,15 @@ namespace Corvus.Leasing.Internal
             builder.AppendLine(this.LeasePolicy.Duration.HasValue ? this.LeasePolicy.Duration.Value.TotalMilliseconds.ToString() : NullString);
             builder.AppendLine(this.LeasePolicy.Name);
             return builder.ToString().Base64UrlEncode();
+        }
+
+        /// <summary>
+        /// Sets the last acquired time.
+        /// </summary>
+        /// <param name="lastAcquired">The last time the lease was acquired, or null if the lease has been released.</param>
+        internal void SetLastAcquired(DateTimeOffset? lastAcquired)
+        {
+            this.lastAcquired = lastAcquired;
         }
     }
 }
