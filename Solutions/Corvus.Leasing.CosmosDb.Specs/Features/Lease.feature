@@ -97,30 +97,30 @@ Given I am the only actor trying to perform an operation called "long-running-ta
 	And the lease expiration date should be null
 	And the lease last acquired date should be null
 
-Scenario: Detokenize a lease using the wrong lease provider (azure to in-memory)
+Scenario: Detokenize a lease using the wrong lease provider (cosmos to in-memory)
 	Given I am the only actor trying to perform an operation called "long-running-task"
 	And I want to acquire a lease for 15 seconds
-	And I create a token for a lease with an AzureLeaseProvider
+	And I create a token for a lease with a CosmosDbLeaseProvider
 	When I ask an InMemoryLeaseProvider to detokenize the token
 	Then it should throw a TokenizationException
 
-Scenario: Tokenize a lease using the wrong lease provider (azure to in-memory)
+Scenario: Tokenize a lease using the wrong lease provider (cosmos to in-memory)
 	Given I am the only actor trying to perform an operation called "long-running-task"
 	And I want to acquire a lease for 15 seconds
-	And I create a lease with an AzureLeaseProvider
+	And I create a lease with a CosmosDbLeaseProvider
 	When I ask an InMemoryLeaseProvider to tokenize the token
 	Then it should throw a TokenizationException
 
-Scenario: Detokenize a lease using the wrong lease provider (in-memory to azure)
+Scenario: Detokenize a lease using the wrong lease provider (in-memory to cosmos)
 	Given I am the only actor trying to perform an operation called "long-running-task"
 	And I want to acquire a lease for 15 seconds
 	And I create a token for a lease with an InMemoryLeaseProvider
-	When I ask an AzureLeaseProvider to detokenize the token
+	When I ask a CosmosDbLeaseProvider to detokenize the token
 	Then it should throw a TokenizationException
 
-Scenario: Tokenize a lease using the wrong lease provider (in-memory to azure)
+Scenario: Tokenize a lease using the wrong lease provider (in-memory to cosmos)
 	Given I am the only actor trying to perform an operation called "long-running-task"
 	And I want to acquire a lease for 15 seconds
 	And I create a lease with an InMemoryLeaseProvider
-	When I ask an AzureLeaseProvider to tokenize the token
+	When I ask a CosmosDbLeaseProvider to tokenize the token
 	Then it should throw a TokenizationException

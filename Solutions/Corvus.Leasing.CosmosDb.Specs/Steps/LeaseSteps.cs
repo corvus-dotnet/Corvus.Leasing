@@ -322,6 +322,25 @@ namespace Corvus.Leasing.CosmosDb.Specs.Steps
             }
         }
 
+        [When(@"I ask a CosmosDbLeaseProvider to detokenize the token")]
+        public void WhenIAskACosmosDbLeaseProviderToDetokenizeTheToken()
+        {
+            string token = this.scenarioContext.Get<string>("LeaseToken");
+            var lp = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
+            try
+            {
+                this.scenarioContext.Set(lp.FromLeaseToken(token));
+            }
+            catch (AggregateException ex)
+            {
+                this.scenarioContext.Add("AggregateException", ex);
+            }
+            catch (Exception ex)
+            {
+                this.scenarioContext.Add("Exception", ex);
+            }
+        }
+
         [Given(@"I create a lease with an InMemoryLeaseProvider")]
         public async Task GivenICreateALeaseWithAnInMemoryLeaseProvider()
         {
@@ -350,9 +369,39 @@ namespace Corvus.Leasing.CosmosDb.Specs.Steps
             }
         }
 
+        [When(@"I ask a CosmosDbLeaseProvider to tokenize the token")]
+        public void WhenIAskACosmosDbLeaseProviderToTokenizeTheToken()
+        {
+            var lp = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
+            Lease lease = this.scenarioContext.Get<Lease>();
+            try
+            {
+                this.scenarioContext.Set(lp.ToLeaseToken(lease), "LeaseToken");
+            }
+            catch (AggregateException ex)
+            {
+                this.scenarioContext.Add("AggregateException", ex);
+            }
+            catch (Exception ex)
+            {
+                this.scenarioContext.Add("Exception", ex);
+            }
+        }
+
 
         [Given(@"I create a token for a lease with an AzureLeaseProvider")]
         public async Task GivenICreateATokenForALeaseWithAnAzureLeaseProvider()
+        {
+            var leaseProvider = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
+            var policy = this.scenarioContext.Get<LeasePolicy>();
+            var lease = await leaseProvider.AcquireAsync(policy);
+            string leaseToken = leaseProvider.ToLeaseToken(lease);
+            this.scenarioContext.Set(lease);
+            this.scenarioContext.Set(leaseToken, "LeaseToken");
+        }
+
+        [Given(@"I create a token for a lease with a CosmosDbLeaseProvider")]
+        public async Task GivenICreateATokenForALeaseWithACosmosDbLeaseProvider()
         {
             var leaseProvider = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
             var policy = this.scenarioContext.Get<LeasePolicy>();

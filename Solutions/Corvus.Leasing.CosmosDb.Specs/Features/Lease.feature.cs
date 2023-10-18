@@ -503,12 +503,12 @@ testRunner.Given("I am the only actor trying to perform an operation called \"lo
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Detokenize a lease using the wrong lease provider (azure to in-memory)")]
-        public void DetokenizeALeaseUsingTheWrongLeaseProviderAzureToIn_Memory()
+        [NUnit.Framework.DescriptionAttribute("Detokenize a lease using the wrong lease provider (cosmos to in-memory)")]
+        public void DetokenizeALeaseUsingTheWrongLeaseProviderCosmosToIn_Memory()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Detokenize a lease using the wrong lease provider (azure to in-memory)", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Detokenize a lease using the wrong lease provider (cosmos to in-memory)", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 100
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -526,7 +526,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("I want to acquire a lease for 15 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 103
- testRunner.And("I create a token for a lease with an AzureLeaseProvider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I create a token for a lease with a CosmosDbLeaseProvider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 104
  testRunner.When("I ask an InMemoryLeaseProvider to detokenize the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -539,12 +539,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Tokenize a lease using the wrong lease provider (azure to in-memory)")]
-        public void TokenizeALeaseUsingTheWrongLeaseProviderAzureToIn_Memory()
+        [NUnit.Framework.DescriptionAttribute("Tokenize a lease using the wrong lease provider (cosmos to in-memory)")]
+        public void TokenizeALeaseUsingTheWrongLeaseProviderCosmosToIn_Memory()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tokenize a lease using the wrong lease provider (azure to in-memory)", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tokenize a lease using the wrong lease provider (cosmos to in-memory)", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 107
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -562,7 +562,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("I want to acquire a lease for 15 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 110
- testRunner.And("I create a lease with an AzureLeaseProvider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I create a lease with a CosmosDbLeaseProvider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 111
  testRunner.When("I ask an InMemoryLeaseProvider to tokenize the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -575,12 +575,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Detokenize a lease using the wrong lease provider (in-memory to azure)")]
-        public void DetokenizeALeaseUsingTheWrongLeaseProviderIn_MemoryToAzure()
+        [NUnit.Framework.DescriptionAttribute("Detokenize a lease using the wrong lease provider (in-memory to cosmos)")]
+        public void DetokenizeALeaseUsingTheWrongLeaseProviderIn_MemoryToCosmos()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Detokenize a lease using the wrong lease provider (in-memory to azure)", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Detokenize a lease using the wrong lease provider (in-memory to cosmos)", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 114
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -601,7 +601,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("I create a token for a lease with an InMemoryLeaseProvider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 118
- testRunner.When("I ask an AzureLeaseProvider to detokenize the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I ask a CosmosDbLeaseProvider to detokenize the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 119
  testRunner.Then("it should throw a TokenizationException", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -611,12 +611,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Tokenize a lease using the wrong lease provider (in-memory to azure)")]
-        public void TokenizeALeaseUsingTheWrongLeaseProviderIn_MemoryToAzure()
+        [NUnit.Framework.DescriptionAttribute("Tokenize a lease using the wrong lease provider (in-memory to cosmos)")]
+        public void TokenizeALeaseUsingTheWrongLeaseProviderIn_MemoryToCosmos()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tokenize a lease using the wrong lease provider (in-memory to azure)", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tokenize a lease using the wrong lease provider (in-memory to cosmos)", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 121
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -637,7 +637,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("I create a lease with an InMemoryLeaseProvider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 125
- testRunner.When("I ask an AzureLeaseProvider to tokenize the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I ask a CosmosDbLeaseProvider to tokenize the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 126
  testRunner.Then("it should throw a TokenizationException", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
