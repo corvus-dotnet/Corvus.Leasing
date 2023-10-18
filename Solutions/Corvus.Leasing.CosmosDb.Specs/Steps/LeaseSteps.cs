@@ -420,6 +420,14 @@ namespace Corvus.Leasing.CosmosDb.Specs.Steps
             this.scenarioContext.Set(lease);
         }
 
+        [Given(@"I create a lease with a CosmosDbLeaseProvider")]
+        public async Task GivenICreateALeaseWithACosmosDbLeaseProvider()
+        {
+            var leaseProvider = ContainerBindings.GetServiceProvider(this.featureContext).GetRequiredService<ILeaseProvider>();
+            var policy = this.scenarioContext.Get<LeasePolicy>();
+            var lease = await leaseProvider.AcquireAsync(policy);
+            this.scenarioContext.Set(lease);
+        }
         [When(@"I ask an InMemoryLeaseProvider to detokenize the token")]
         public void WhenIAskAnInMemoryLeaseProviderToDetokenizeTheToken()
         {
